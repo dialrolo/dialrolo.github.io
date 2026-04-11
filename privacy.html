@@ -6,12 +6,11 @@
     <title>Privacy Policy - DialRolo</title>
     <style>
         :root { 
-            --primary: #334155; /* Deep Slate */
-            --bg: #F2F2F7; /* Light Gray */
+            --primary: #334155; 
+            --bg: #F2F2F7; 
             --text: #1F2937; 
             --accent: #FFFFFF; 
             --orange: #FF5722;
-            --slate-light: #64748B;
         }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", sans-serif; 
@@ -23,118 +22,96 @@
             padding: 40px 24px; 
         }
 
-        /* 언어 스위처 (Liquid Glass 스타일) */
         .lang-switcher {
             display: flex;
             justify-content: flex-end;
             gap: 8px;
             margin-bottom: 40px;
-            position: sticky;
-            top: 20px;
-            z-index: 100;
         }
         .lang-btn {
             padding: 8px 16px;
             border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            color: var(--slate-light);
-            font-size: 0.9rem;
-            font-weight: 600;
+            border: 1px solid #D1D5DB;
+            background: white;
+            color: #6B7280;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-weight: 600;
         }
         .lang-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(51, 65, 85, 0.2);
         }
 
+        /* 기본적으로 숨기되 active 클래스가 있으면 표시 */
         .policy-content { display: none; }
-        .policy-content.active { display: block; animation: fadeIn 0.5s ease; }
+        .policy-content.active { display: block; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        h1 { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 30px; letter-spacing: -0.04em; }
-        h2 { font-size: 1.5rem; margin-top: 50px; color: var(--primary); border-left: 6px solid var(--primary); padding-left: 20px; font-weight: 800; }
-        p, li { font-size: 1.05rem; color: #4B5563; }
+        h1 { font-size: 2.5rem; font-weight: 900; color: var(--primary); margin-bottom: 30px; }
+        h2 { font-size: 1.5rem; margin-top: 40px; color: var(--primary); border-left: 6px solid var(--primary); padding-left: 20px; }
         
         .philosophy-box { 
             background: var(--accent); 
             border-radius: 24px; 
             padding: 32px; 
-            margin: 40px 0; 
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            margin: 30px 0; 
+            border: 1px solid rgba(0,0,0,0.05);
         }
         
         .highlight { color: var(--orange); font-weight: 700; }
         
         footer { 
-            margin-top: 80px; 
+            margin-top: 60px; 
             padding-top: 30px; 
             border-top: 1px solid #E5E7EB; 
             font-size: 0.9rem; 
-            color: #9CA3AF; 
             text-align: center; 
+            color: #9CA3AF;
         }
     </style>
 </head>
 <body>
 
     <div class="lang-switcher">
-        <button class="lang-btn" onclick="setLang('ko')">한국어</button>
-        <button class="lang-btn" onclick="setLang('en')">English</button>
+        <button id="btn-ko" class="lang-btn active" onclick="setLang('ko')">한국어</button>
+        <button id="btn-en" class="lang-btn" onclick="setLang('en')">English</button>
     </div>
 
-    <div id="content-ko" class="policy-content">
+    <div id="content-ko" class="policy-content active">
         <h1>DialRolo 개인정보 처리방침</h1>
-        <p><strong>최종 업데이트:</strong> 2026년 4월 12일</p>
         <div class="philosophy-box">
-            <strong>설계 철학:</strong> DialRolo는 <strong>'로컬 퍼스트(Local-First)'</strong> 원칙을 따릅니다. 우리는 기술적으로 서버 연동이 가능함에도 불구하고, 사용자의 완전한 데이터 소유권을 위해 <span class="highlight">의도적으로 외부 서버를 운영하지 않는 '제로 서버(Zero-Server)' 아키텍처</span>를 선택했습니다.
+            <strong>설계 철학:</strong> <span class="highlight">제로 서버(Zero-Server)</span> 아키텍처를 통해 사용자의 완전한 데이터 소유권을 보장합니다.
         </div>
-        <h2>1. 데이터 접근 및 권한</h2>
-        <p>DialRolo는 통화 기록 관리 및 백업을 위해 기기 내 통화 기록과 연락처 정보에 접근합니다. 모든 처리는 로컬 기기 내에서만 이루어집니다.</p>
-        <h2>2. 데이터 저장 및 주권</h2>
-        <p>사용자의 모든 데이터는 기기 내 보안 저장소에만 저장됩니다. <span class="highlight">내보내기 및 가져오기</span> 기능은 암호화된 파일 형태로 사용자가 직접 관리합니다.</p>
-        <footer>
-            &copy; 2026 DialRolo. All rights reserved.
-        </footer>
+        <h2>1. 데이터 접근</h2>
+        <p>통화 기록 및 연락처 정보는 오직 기기 내에서만 처리됩니다.</p>
+        <footer>&copy; 2026 DialRolo.</footer>
     </div>
 
     <div id="content-en" class="policy-content">
         <h1>Privacy Policy for DialRolo</h1>
-        <p><strong>Last Updated:</strong> March 14, 2026</p>
         <div class="philosophy-box">
-            <strong>Philosophy:</strong> DialRolo follows an <strong>'Intentional Local-First'</strong> approach. We deliberately choose a <span class="highlight">Zero-Server architecture</span> to ensure your complete data sovereignty.
+            <strong>Philosophy:</strong> We choose a <span class="highlight">Zero-Server architecture</span> for your data sovereignty.
         </div>
         <h2>1. Data Access</h2>
-        <p>DialRolo requests access to Call Logs and Contacts to provide management features. All data processing occurs strictly on your local device.</p>
-        <h2>2. Data Storage & Portability</h2>
-        <p>Your data remains yours. All records are stored in private local databases. <span class="highlight">Manual Export/Import</span> features allow you to move your history using encrypted files.</p>
-        <footer>
-            &copy; 2026 DialRolo. All rights reserved.
-        </footer>
+        <p>All data processing occurs strictly on your local device.</p>
+        <footer>&copy; 2026 DialRolo.</footer>
     </div>
 
     <script>
         function setLang(lang) {
+            // 모든 콘텐츠 숨기기
             document.querySelectorAll('.policy-content').forEach(el => el.classList.remove('active'));
+            // 모든 버튼 비활성화
             document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
             
+            // 선택된 언어 활성화
             document.getElementById('content-' + lang).classList.add('active');
-            document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
-            
-            document.documentElement.lang = lang;
+            document.getElementById('btn-' + lang).classList.add('active');
         }
 
-        // 초기 언어 감지 로직
+        // 브라우저 언어 감지 (한국어 아니면 영어로 전환)
         const userLang = navigator.language || navigator.userLanguage;
-        if (userLang.startsWith('ko')) {
-            setLang('ko');
-        } else {
+        if (!userLang.startsWith('ko')) {
             setLang('en');
         }
     </script>
