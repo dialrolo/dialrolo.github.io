@@ -1,192 +1,276 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DialRolo | Beyond Call Log Limits</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --slate-main: #334155; --slate-bg: #F8FAFC; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--slate-bg); color: var(--slate-main); line-height: 1.6; }
-        .liquid-glass {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 28px;
-        }
-        .tab-content { display: none; }
-        .tab-content.active { display: block !important; }
-        .tab-btn { border-bottom: 2px solid transparent; transition: all 0.3s ease; cursor: pointer; }
-        .tab-btn.active { border-color: var(--slate-main); color: var(--slate-main) !important; font-weight: 700; opacity: 1; }
-        
-        .data-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; margin: 1rem 0; }
-        .data-table th, .data-table td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
-        .data-table th { background: #f1f5f9; font-weight: 600; }
-        .policy-section h4 { font-weight: 700; color: #0f172a; margin-top: 2rem; margin-bottom: 0.75rem; border-left: 4px solid var(--slate-main); padding-left: 12px; }
-        .highlight-box { background: #fffbeb; border: 1px solid #fef3c7; padding: 1rem; border-radius: 12px; font-size: 0.85rem; color: #92400e; margin: 1rem 0; }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialRolo 개인정보처리방침 · Privacy Policy</title>
+<meta name="description" content="DialRolo 개인정보처리방침 / Privacy Policy / プライバシーポリシー">
+<style>
+:root{
+  --bg:#f7f7f5; --card:#ffffff; --text:#1d1d1b; --muted:#5f5e5a; --line:#e3e1da;
+  --accent:#4b3fc6; --accent-soft:#ecebfb; --ok:#1d7a5a; --ok-soft:#e3f4ec;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121212; --card:#1c1c1e; --text:#ececea; --muted:#a3a29c; --line:#2e2e30;
+    --accent:#a59dff; --accent-soft:#25234a; --ok:#6fd3a8; --ok-soft:#163328;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Noto Sans JP","Segoe UI",sans-serif;
+  line-height:1.7;font-size:16px}
+.wrap{max-width:760px;margin:0 auto;padding:32px 16px 64px}
+header h1{font-size:26px;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:14px}
+.lang{display:flex;gap:8px;margin:20px 0 28px;flex-wrap:wrap}
+.lang a{padding:6px 14px;border:1px solid var(--line);border-radius:999px;color:var(--text);text-decoration:none;font-size:14px;background:var(--card)}
+.lang a.on{background:var(--accent);border-color:var(--accent);color:#fff}
+section.doc{display:none}
+section.doc.on{display:block}
+.summary{background:var(--ok-soft);border-radius:12px;padding:16px 18px;margin:0 0 28px}
+.summary strong{color:var(--ok)}
+.summary ul{margin:8px 0 0;padding-left:20px}
+h2{font-size:19px;margin:36px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:16px;margin:20px 0 6px}
+table{width:100%;border-collapse:collapse;margin:8px 0 16px;font-size:14px;background:var(--card);border-radius:10px;overflow:hidden}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{background:var(--accent-soft);font-weight:600}
+tr:last-child td{border-bottom:none}
+.tablewrap{overflow-x:auto}
+.meta{color:var(--muted);font-size:14px;margin-top:40px}
+a{color:var(--accent)}
+</style>
 </head>
-<body class="antialiased">
+<body>
+<div class="wrap">
+<header>
+  <h1>DialRolo</h1>
+  <p>개인정보처리방침 · Privacy Policy · プライバシーポリシー</p>
+</header>
 
-    <header class="max-w-5xl mx-auto pt-24 pb-16 px-6">
-        <div class="inline-block px-3 py-1 mb-6 text-[10px] font-bold tracking-[0.2em] uppercase bg-slate-200 rounded-md text-slate-700">
-            Android Utility Project
-        </div>
-        <h1 class="text-5xl md:text-6xl font-black tracking-tight text-slate-900 mb-6">
-            Stop losing your <br><span class="text-slate-500">Call History.</span>
-        </h1>
-        <p class="text-lg md:text-xl text-slate-500 max-w-2xl font-light leading-relaxed">
-            Android typically limits your call history to 500 entries. <br class="hidden md:block">
-            DialRolo archives everything locally, giving you a permanent record of your communication.
-        </p>
-    </header>
+<nav class="lang" aria-label="Language">
+  <a href="#ko" data-lang="ko">한국어</a>
+  <a href="#en" data-lang="en">English</a>
+  <a href="#ja" data-lang="ja">日本語</a>
+</nav>
 
-    <main class="max-w-5xl mx-auto px-6 pb-32">
-        
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-24">
-            <div class="space-y-6">
-                <h2 class="text-3xl font-bold text-slate-900">Why DialRolo?</h2>
-                <p class="text-slate-600 leading-relaxed text-sm">
-                    대부분의 스마트폰은 저장 공간 효율을 위해 오래된 통화 기록을 자동으로 삭제합니다. 비즈니스 파트너와의 중요한 통화 시점이나 소중한 사람과의 기록이 어느 날 사라져 버리는 이유입니다. <br><br>
-                    DialRolo는 시스템 다이얼러의 휘발성 기록을 <strong>로컬 전용 데이터베이스</strong>로 안전하게 옮겨 담습니다. 이제 2,000건, 혹은 그 이상의 기록을 영구적으로 보관하고 관리하세요.
-                </p>
-            </div>
-            <div class="liquid-glass p-10 flex flex-col justify-center">
-                <div class="text-4xl font-bold mb-2">2,000+</div>
-                <div class="text-slate-500 font-medium">Archivable Logs</div>
-                <div class="mt-4 h-1 w-20 bg-slate-400"></div>
-                <p class="mt-6 text-xs text-slate-500">시스템 제한을 넘어선 무제한 로컬 아카이빙 프로세스. 서버 전송 없이 오직 당신의 기기에만 저장됩니다.</p>
-            </div>
-        </section>
+<!-- ===================== 한국어 ===================== -->
+<section class="doc" id="ko" lang="ko">
+  <div class="summary">
+    <strong>요약</strong>
+    <ul>
+      <li>DialRolo는 통화기록과 연락처를 <b>이 휴대폰 안에서만</b> 처리합니다.</li>
+      <li>앱에는 인터넷 권한이 없으며, 어떤 정보도 개발자나 외부 서버로 전송하지 않습니다.</li>
+      <li>광고, 분석, 추적 도구를 사용하지 않습니다.</li>
+      <li>개발자는 사용자의 통화기록, 연락처, 백업 파일에 접근할 수 없습니다.</li>
+    </ul>
+  </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
-            <div class="liquid-glass p-8">
-                <h4 class="font-bold mb-3">Visual Dashboard</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">Visualize your communication patterns with clean, intuitive charts. Understand your peak hours and call frequencies at a glance.</p>
-            </div>
-            <div class="liquid-glass p-8">
-                <h4 class="font-bold mb-3">Interaction Insights</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">Go beyond numbers. Our weight-based algorithm analyzes your call frequency and duration to provide deep interaction insights.</p>
-            </div>
-            <div class="liquid-glass p-8">
-                <h4 class="font-bold mb-3">Secure Export</h4>
-                <p class="text-xs text-slate-500 leading-relaxed">Effortless local backup via Android SAF. Optional $AES-256-GCM$ encryption ensures your exported files remain for your eyes only.</p>
-            </div>
-        </div>
+  <p>이 개인정보처리방침은 Android 앱 <b>DialRolo</b>(패키지명 com.mcstarbig.dialrolo, 이하 "앱")가 사용자의 정보를 어떻게 다루는지 설명합니다.</p>
 
-        <section id="privacy" class="bg-white rounded-[32px] shadow-sm border border-slate-200 overflow-hidden">
-            <div class="flex border-b border-slate-100 bg-slate-50/50">
-                <button onclick="openTab('kr')" id="btn-kr" class="tab-btn active flex-1 py-5 text-[11px] font-bold tracking-widest uppercase">Korean (KR)</button>
-                <button onclick="openTab('en')" id="btn-en" class="tab-btn flex-1 py-5 text-[11px] font-bold tracking-widest uppercase text-slate-400">English (EN)</button>
-            </div>
+  <h2>1. 처리하는 정보와 목적</h2>
+  <p>앱은 아래 권한을 사용자가 허용한 경우에만, 적힌 목적으로만 사용합니다.</p>
+  <div class="tablewrap"><table>
+    <tr><th>권한</th><th>읽거나 쓰는 정보</th><th>목적</th></tr>
+    <tr><td>통화기록 읽기<br>(READ_CALL_LOG)</td><td>통화 날짜·시간, 상대방 번호, 통화 종류(수신·발신·부재중 등), 통화 시간, 삼성 기기의 통화 메모</td><td>휴대폰의 통화기록이 지워지기 전에 앱 안에 계속 보관(백업)하고, 보관한 기록으로 통화 요약과 통계를 보여 주기 위해</td></tr>
+    <tr><td>통화기록 쓰기<br>(WRITE_CALL_LOG)</td><td>백업 파일에 담긴 통화기록</td><td>사용자가 복원 화면에서 "전화 앱 통화기록에도 복원"을 선택하고 확인 창에서 [복원]을 누른 경우에만, 백업한 기록을 휴대폰 기본 전화 앱의 통화기록에 되살리기 위해. 그 외에는 시스템 통화기록을 수정하거나 삭제하지 않습니다.</td></tr>
+    <tr><td>연락처 읽기<br>(READ_CONTACTS)</td><td>연락처 이름, 전화번호, 사진, 회사명, 즐겨찾기 여부</td><td>통화기록에 상대방 이름과 사진을 표시하고, 한동안 연락하지 않은 사람을 찾아 주기 위해. 연락처를 수정하거나 삭제하지 않습니다.</td></tr>
+    <tr><td>알림<br>(POST_NOTIFICATIONS)</td><td>—</td><td>자동 백업 결과(성공·실패)를 알려 주기 위해</td></tr>
+  </table></div>
+  <p>권한을 허용하지 않아도 앱을 열 수 있으며, 해당 권한이 필요한 기능만 사용할 수 없습니다. 권한은 언제든 휴대폰 <b>설정 → 애플리케이션 → DialRolo → 권한</b>에서 철회할 수 있습니다.</p>
 
-            <div id="kr" class="tab-content active p-8 md:p-16 policy-section">
-                <h2 class="text-3xl font-black text-slate-900 mb-2">개인정보 처리방침</h2>
-                <p class="text-xs text-slate-400 mb-6">최종 수정일: 2026. 04. 12.</p>
+  <h2>2. 저장 위치와 보호</h2>
+  <div class="tablewrap"><table>
+    <tr><th>정보</th><th>저장 위치</th><th>보호 방식</th></tr>
+    <tr><td>보관한 통화기록, 연락처 정보, 앱 설정</td><td>휴대폰 안의 앱 전용 저장 공간</td><td>Android가 다른 앱의 접근을 차단합니다. 앱 내부 데이터베이스 자체는 별도로 암호화하지 않으며, 휴대폰의 기기 암호화(화면 잠금)로 보호됩니다.</td></tr>
+    <tr><td>백업 파일(.rolo)</td><td>사용자가 직접 고른 폴더(내 파일, 구글 드라이브 등)</td><td>사용자가 정한 비밀번호로 AES-256-GCM 암호화됩니다. 비밀번호나 16자리 복구 코드 없이는 열 수 없습니다.</td></tr>
+    <tr><td>자동 백업용 열쇠</td><td>Android Keystore</td><td>기기 보안 영역에 봉인되어 다른 앱이나 사람이 꺼낼 수 없습니다.</td></tr>
+    <tr><td>백업 비밀번호</td><td>저장하지 않음</td><td>—</td></tr>
+  </table></div>
 
-                <div class="highlight-box font-semibold">
-                    💡 DialRolo는 사용자의 원본 데이터를 수정, 삭제, 가공(변조)할 수 있는 쓰기 권한을 요청하지 않으며, 오직 분석 및 백업을 위한 읽기 전용 접근만을 수행합니다.
-                </div>
+  <h2>3. 외부 전송과 제3자 제공</h2>
+  <ul>
+    <li>앱은 <b>인터넷 권한을 요청하지 않으며</b>, 개발자나 외부 서버로 어떤 정보도 전송하지 않습니다.</li>
+    <li>광고, 분석, 추적, 크래시 보고 도구(SDK)를 사용하지 않습니다.</li>
+    <li>정보를 판매하거나 제3자에게 제공하지 않으며, 처리를 위탁하지 않습니다.</li>
+    <li>백업 파일을 다른 곳으로 옮기는 것은 사용자가 직접 선택한 경우에만 이루어집니다. 사용자가 구글 드라이브 같은 클라우드 폴더를 저장 위치로 고르면, 암호화된 백업 파일이 그 서비스에 저장되며 해당 서비스의 정책이 적용됩니다.</li>
+  </ul>
 
-                <h4>1. 데이터 수집 항목 및 권한 범위</h4>
-                <p class="text-sm">본 앱은 기능 수행을 위해 필요한 최소한의 데이터에 대해 <strong>읽기 전용(Read-only)</strong> 접근을 수행합니다.</p>
-                <table class="data-table">
-                    <thead><tr><th>항목</th><th>권한 유형</th><th>이용 목적</th></tr></thead>
-                    <tbody>
-                        <tr><td>통화 기록(Call Log)</td><td><strong>읽기 전용</strong></td><td>대시보드 통계 및 2,000건 이상의 로컬 아카이브 생성</td></tr>
-                        <tr><td>연락처(Contacts)</td><td><strong>읽기 전용</strong></td><td>통화 목록 내 이름 표시 (선택 사항)</td></tr>
-                        <tr><td>광고 식별자(AAID)</td><td>비식별 접근</td><td>Google AdMob을 통한 광고 송출</td></tr>
-                    </tbody>
-                </table>
+  <h3>Android 기기 백업</h3>
+  <p>휴대폰 설정에서 Google 계정의 기기 백업을 켠 경우, Android 운영체제가 앱 데이터를 사용자의 Google 계정 백업에 포함할 수 있습니다. 앱은 이 백업을 기기 측 종단간 암호화가 가능한 경우에만 허용하며, 자동 백업용 열쇠는 제외합니다. 이 기능은 Android가 제공하는 것으로 개발자는 해당 데이터에 접근할 수 없습니다.</p>
 
-                <h4>2. 데이터 무가공 원칙</h4>
-                <ul class="list-disc pl-5 text-sm space-y-2 mt-2">
-                    <li><strong>수정 금지:</strong> 앱은 시스템에 저장된 사용자의 원본 통화 기록을 수정하거나 삭제하지 않습니다.</li>
-                    <li><strong>무가공 분석:</strong> 앱 내 인사이트 분석은 원본 데이터의 통계적 수치만을 계산하며, 사용자의 프라이버시를 침해할 수 있는 별도의 가공이나 변조 행위를 일체 수행하지 않습니다.</li>
-                    <li><strong>서버 미전송:</strong> 모든 분석 결과는 기기 외부로 전송되지 않고 로컬 환경에서만 폐쇄적으로 처리됩니다.</li>
-                </ul>
+  <h2>4. 보관 기간과 삭제</h2>
+  <ul>
+    <li>앱에 보관한 정보는 사용자가 앱을 삭제하거나 앱 데이터를 지울 때까지 휴대폰에 남습니다.</li>
+    <li>휴대폰 <b>설정 → 애플리케이션 → DialRolo → 저장공간 → 데이터 삭제</b> 또는 앱 삭제로 모든 정보를 즉시 지울 수 있습니다.</li>
+    <li>사용자가 다른 폴더에 저장한 백업 파일과, 전화 앱으로 복원한 통화기록은 앱을 삭제해도 남으므로 필요하면 직접 지워야 합니다.</li>
+    <li>개발자는 정보를 수집하지 않으므로 개발자 측에서 보관하거나 파기할 정보가 없습니다.</li>
+  </ul>
 
-                <h4>3. 제3자 제공 및 위탁 (Play Store Compliance)</h4>
-                <div class="highlight-box font-medium mb-4">
-                    <strong>구글 플레이 데이터 보안 설문 정합성 고지:</strong> 본 앱은 통화 기록을 외부 서버로 '수집(Collection)'하지 않으며, 오직 앱의 핵심 기능 수행을 위해 '접근(Access)'하고 사용자의 선택에 따른 로컬 백업 용도로만 활용합니다.
-                </div>
-                <p class="text-sm">사용자의 데이터를 외부 서버로 전송하지 않으며, 다음의 표준 서비스 외에는 어떠한 제3자에게도 정보를 제공하지 않습니다.</p>
-                <ul class="list-disc pl-5 text-sm space-y-1 mt-2">
-                    <li><strong>Google AdMob:</strong> 비식별 기반 광고 제공</li>
-                    <li><strong>Google Android OS:</strong> 시스템 자동 백업 (설정 데이터 약 25MB). 이는 사용자의 구글 계정 귀속 서비스이며 개발자는 해당 데이터에 접근할 수 없습니다.</li>
-                </ul>
+  <h2>5. 아동의 개인정보</h2>
+  <p>앱은 아동을 대상으로 하지 않으며, 아동을 포함한 누구의 정보도 수집하지 않습니다.</p>
 
-                <h4>4. 파기 절차</h4>
-                <p class="text-sm">앱 삭제 시 기기 로컬 DB에 아카이브된 모든 통계 및 통화 데이터는 즉시 물리적으로 파기되어 복구가 불가능합니다.</p>
-            </div>
+  <h2>6. 방침의 변경</h2>
+  <p>이 방침이 바뀌면 이 페이지에 게시하고 아래 시행일을 갱신합니다. 앱이 처리하는 정보의 종류나 목적이 바뀌는 경우에는 앱 업데이트 내용에도 안내합니다.</p>
 
-            <div id="en" class="tab-content p-8 md:p-16 policy-section">
-                <h2 class="text-3xl font-black text-slate-900 mb-2">Privacy Policy</h2>
-                <p class="text-xs text-slate-400 mb-6">Last Updated: April 12, 2026</p>
+  <h2>7. 문의</h2>
+  <p>개인정보 보호책임자: NMTT Co.<br>
+  이메일: <a href="mailto:mcstarbig@gmail.com">mcstarbig@gmail.com</a></p>
 
-                <div class="highlight-box font-semibold">
-                    💡 DialRolo utilizes Read-only access to your call history. We do not modify, delete, or manipulate your original device data in any way.
-                </div>
+  <p class="meta">시행일: 2026년 11월 22일 · 이전 방침(2026년 4월 12일)은 광고를 포함하던 이전 버전의 앱에 해당합니다. 앱 1.1.0부터 광고가 완전히 제거되었습니다.</p>
+</section>
 
-                <h4>1. Data Types and Access Level</h4>
-                <p class="text-sm">We strictly follow a "Read-only" policy for all sensitive permissions.</p>
-                <table class="data-table">
-                    <thead><tr><th>Type</th><th>Access Level</th><th>Purpose</th></tr></thead>
-                    <tbody>
-                        <tr><td>Call Log</td><td><strong>Read-only</strong></td><td>Analytics & Local Archiving (2,000+)</td></tr>
-                        <tr><td>Contacts</td><td><strong>Read-only</strong></td><td>Displaying names in logs (Optional)</td></tr>
-                        <tr><td>Advertising ID</td><td>Non-personal</td><td>Ads via Google AdMob</td></tr>
-                    </tbody>
-                </tbody>
-                </table>
+<!-- ===================== English ===================== -->
+<section class="doc" id="en" lang="en">
+  <div class="summary">
+    <strong>Summary</strong>
+    <ul>
+      <li>DialRolo processes your call log and contacts <b>only on this phone</b>.</li>
+      <li>The app has no internet permission and sends nothing to the developer or any server.</li>
+      <li>No advertising, analytics or tracking tools are used.</li>
+      <li>The developer cannot access your call log, contacts or backup files.</li>
+    </ul>
+  </div>
 
-                <h4>2. No-Manipulation Guarantee</h4>
-                <ul class="list-disc pl-5 text-sm space-y-2">
-                    <li><strong>Integrity:</strong> We do not alter or delete your device's raw call history.</li>
-                    <li><strong>On-device Processing:</strong> Your raw data is used only for local calculations. No re-processing or manipulation for hidden purposes.</li>
-                    <li><strong>Zero External Transmission:</strong> All insights are computed strictly within your device environment.</li>
-                </ul>
+  <p>This Privacy Policy explains how the Android app <b>DialRolo</b> (package com.mcstarbig.dialrolo, "the app") handles your information.</p>
 
-                <h4>3. Third-Party Services (Play Store Compliance)</h4>
-                <div class="highlight-box font-medium mb-4">
-                    <strong>Google Play Data Safety Disclosure:</strong> This app does not 'Collect' call logs to external servers. It only 'Accesses' data for core app functionality and local backup purposes initiated by the user.
-                </div>
-                <p class="text-sm">No personal logs are transmitted to external private servers.</p>
-                <ul class="list-disc pl-5 text-sm space-y-1 mt-2">
-                    <li><strong>Google AdMob:</strong> For non-personally identifiable ads.</li>
-                    <li><strong>Google Android OS:</strong> For system-level auto backups (approx. 25MB). Managed by Google services; developer has no access.</li>
-                </ul>
+  <h2>1. Information processed and why</h2>
+  <p>The app uses the permissions below only after you allow them, and only for the stated purposes.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Permission</th><th>Information read or written</th><th>Purpose</th></tr>
+    <tr><td>Read call log<br>(READ_CALL_LOG)</td><td>Call date and time, phone number, call type (incoming, outgoing, missed, etc.), call duration, call memos on Samsung devices</td><td>To keep (back up) your call history inside the app before the phone deletes it, and to show call summaries and statistics from the kept records</td></tr>
+    <tr><td>Write call log<br>(WRITE_CALL_LOG)</td><td>Call records contained in your backup file</td><td>Only when you choose "Also restore to the Phone app call history" on the restore screen and tap [Restore] in the confirmation dialog, to bring backed-up records back into your phone's built-in call history. The app never otherwise changes or deletes the system call log.</td></tr>
+    <tr><td>Read contacts<br>(READ_CONTACTS)</td><td>Contact name, phone number, photo, company, starred status</td><td>To show names and photos in your call history and to find people you haven't contacted for a while. The app never changes or deletes contacts.</td></tr>
+    <tr><td>Notifications<br>(POST_NOTIFICATIONS)</td><td>—</td><td>To tell you whether an automatic backup succeeded or failed</td></tr>
+  </table></div>
+  <p>You can open the app without granting these permissions; only the features that need them will be unavailable. You can revoke permissions at any time in <b>Settings → Apps → DialRolo → Permissions</b>.</p>
 
-                <h4>4. Deletion</h4>
-                <p class="text-sm">Uninstalling the app permanently erases all locally archived data and analytical results from your device storage.</p>
-            </div>
-        </section>
-    </main>
+  <h2>2. Where data is stored and how it is protected</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Data</th><th>Location</th><th>Protection</th></tr>
+    <tr><td>Kept call history, contact details, app settings</td><td>The app's private storage on your phone</td><td>Android blocks access by other apps. The app's internal database is not separately encrypted; it is protected by your phone's device encryption (screen lock).</td></tr>
+    <tr><td>Backup files (.rolo)</td><td>A folder you choose (My Files, Google Drive, etc.)</td><td>Encrypted with AES-256-GCM using a password you set. They cannot be opened without the password or the 16-character recovery code.</td></tr>
+    <tr><td>Key for automatic backup</td><td>Android Keystore</td><td>Sealed in the device's secure hardware; it cannot be extracted by other apps or people.</td></tr>
+    <tr><td>Backup password</td><td>Not stored</td><td>—</td></tr>
+  </table></div>
 
-    <footer class="text-center pb-20 text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">
-        DialRolo Project &bull; Local-First Architecture &bull; 2026
-    </footer>
+  <h2>3. Transfer and sharing</h2>
+  <ul>
+    <li>The app <b>does not request internet permission</b> and sends no information to the developer or any server.</li>
+    <li>No advertising, analytics, tracking or crash-reporting SDKs are used.</li>
+    <li>Information is never sold or shared with third parties, and no processing is outsourced.</li>
+    <li>Backup files leave the phone only if you choose so. If you pick a cloud folder such as Google Drive as the save location, the encrypted backup file is stored with that service under its own policy.</li>
+  </ul>
 
-    <script>
-        function openTab(lang) {
-            const contents = document.getElementsByClassName('tab-content');
-            for (let i = 0; i < contents.length; i++) { contents[i].classList.remove('active'); }
-            const buttons = document.getElementsByClassName('tab-btn');
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-                buttons[i].classList.add('text-slate-400');
-            }
-            const targetContent = document.getElementById(lang);
-            const targetBtn = document.getElementById('btn-' + lang);
-            if (targetContent && targetBtn) {
-                targetContent.classList.add('active');
-                targetBtn.classList.add('active');
-                targetBtn.classList.remove('text-slate-400');
-            }
-        }
-    </script>
+  <h3>Android device backup</h3>
+  <p>If you turned on Google account device backup in your phone settings, Android may include app data in your Google account backup. The app allows this only where client-side end-to-end encryption is available and excludes the automatic-backup key. This is an Android feature; the developer cannot access that data.</p>
+
+  <h2>4. Retention and deletion</h2>
+  <ul>
+    <li>Data kept in the app stays on your phone until you uninstall the app or clear its data.</li>
+    <li>You can delete everything immediately via <b>Settings → Apps → DialRolo → Storage → Clear data</b>, or by uninstalling the app.</li>
+    <li>Backup files saved to other folders, and call records restored to the Phone app, remain after uninstalling; delete them yourself if needed.</li>
+    <li>Because the developer collects nothing, there is no data held or deleted on the developer's side.</li>
+  </ul>
+
+  <h2>5. Children</h2>
+  <p>The app is not directed at children and collects no information from anyone, including children.</p>
+
+  <h2>6. Changes</h2>
+  <p>Changes to this policy will be posted on this page with an updated effective date. If the types or purposes of information the app processes change, the app's update notes will also say so.</p>
+
+  <h2>7. Contact</h2>
+  <p>Privacy contact: NMTT Co.<br>
+  Email: <a href="mailto:mcstarbig@gmail.com">mcstarbig@gmail.com</a></p>
+
+  <p class="meta">Effective date: November 22, 2026 · The previous policy (April 12, 2026) applied to an earlier version of the app that contained ads. Ads were completely removed in app version 1.1.0.</p>
+</section>
+
+<!-- ===================== 日本語 ===================== -->
+<section class="doc" id="ja" lang="ja">
+  <div class="summary">
+    <strong>概要</strong>
+    <ul>
+      <li>DialRolo は通話履歴と連絡先を<b>この端末の中だけ</b>で処理します。</li>
+      <li>アプリにはインターネット権限がなく、開発者や外部サーバーへ情報を送信しません。</li>
+      <li>広告、分析、トラッキングのツールは使用しません。</li>
+      <li>開発者はユーザーの通話履歴、連絡先、バックアップファイルにアクセスできません。</li>
+    </ul>
+  </div>
+
+  <p>本プライバシーポリシーは、Android アプリ <b>DialRolo</b>(パッケージ名 com.mcstarbig.dialrolo、以下「本アプリ」)がユーザーの情報をどのように扱うかを説明します。</p>
+
+  <h2>1. 処理する情報と目的</h2>
+  <p>本アプリは、ユーザーが許可した場合にのみ、以下の目的に限って権限を使用します。</p>
+  <div class="tablewrap"><table>
+    <tr><th>権限</th><th>読み取り・書き込みする情報</th><th>目的</th></tr>
+    <tr><td>通話履歴の読み取り<br>(READ_CALL_LOG)</td><td>通話の日時、相手の電話番号、通話の種類(着信・発信・不在着信など)、通話時間、Samsung 端末の通話メモ</td><td>端末の通話履歴が削除される前にアプリ内に保管(バックアップ)し、保管した記録から通話の概要と統計を表示するため</td></tr>
+    <tr><td>通話履歴の書き込み<br>(WRITE_CALL_LOG)</td><td>バックアップファイルに含まれる通話履歴</td><td>復元画面で「電話アプリの通話履歴にも復元」を選び、確認画面で[復元]を押した場合に限り、バックアップした履歴を端末の標準電話アプリに戻すため。それ以外でシステムの通話履歴を変更・削除することはありません。</td></tr>
+    <tr><td>連絡先の読み取り<br>(READ_CONTACTS)</td><td>連絡先の名前、電話番号、写真、会社名、お気に入り</td><td>通話履歴に相手の名前と写真を表示し、しばらく連絡していない人を見つけるため。連絡先を変更・削除することはありません。</td></tr>
+    <tr><td>通知<br>(POST_NOTIFICATIONS)</td><td>—</td><td>自動バックアップの結果(成功・失敗)をお知らせするため</td></tr>
+  </table></div>
+  <p>権限を許可しなくてもアプリは開けますが、その権限が必要な機能は使えません。権限は端末の<b>設定 → アプリ → DialRolo → 権限</b>からいつでも取り消せます。</p>
+
+  <h2>2. 保存場所と保護</h2>
+  <div class="tablewrap"><table>
+    <tr><th>情報</th><th>保存場所</th><th>保護方法</th></tr>
+    <tr><td>保管した通話履歴、連絡先情報、アプリ設定</td><td>端末内のアプリ専用領域</td><td>Android が他のアプリからのアクセスを遮断します。アプリ内部のデータベース自体は個別に暗号化しておらず、端末の暗号化(画面ロック)で保護されます。</td></tr>
+    <tr><td>バックアップファイル(.rolo)</td><td>ユーザーが選んだフォルダ(マイファイル、Google ドライブなど)</td><td>ユーザーが設定したパスワードで AES-256-GCM により暗号化されます。パスワードまたは16桁の復旧コードがなければ開けません。</td></tr>
+    <tr><td>自動バックアップ用の鍵</td><td>Android Keystore</td><td>端末のセキュア領域に封印され、他のアプリや人が取り出すことはできません。</td></tr>
+    <tr><td>バックアップのパスワード</td><td>保存しません</td><td>—</td></tr>
+  </table></div>
+
+  <h2>3. 外部送信と第三者提供</h2>
+  <ul>
+    <li>本アプリは<b>インターネット権限を要求せず</b>、開発者や外部サーバーへ情報を送信しません。</li>
+    <li>広告、分析、トラッキング、クラッシュレポートの SDK は使用しません。</li>
+    <li>情報を販売したり第三者に提供したりせず、処理の委託も行いません。</li>
+    <li>バックアップファイルを他の場所へ移すのは、ユーザー自身が選んだ場合だけです。Google ドライブなどのクラウドフォルダを保存先に選んだ場合、暗号化されたバックアップファイルはそのサービスに保存され、そのサービスのポリシーが適用されます。</li>
+  </ul>
+
+  <h3>Android の端末バックアップ</h3>
+  <p>端末の設定で Google アカウントのバックアップを有効にしている場合、Android がアプリデータを Google アカウントのバックアップに含めることがあります。本アプリは端末側のエンドツーエンド暗号化が利用できる場合にのみこれを許可し、自動バックアップ用の鍵は除外します。これは Android の機能であり、開発者はそのデータにアクセスできません。</p>
+
+  <h2>4. 保管期間と削除</h2>
+  <ul>
+    <li>アプリに保管した情報は、アプリを削除するかアプリのデータを消去するまで端末に残ります。</li>
+    <li>端末の<b>設定 → アプリ → DialRolo → ストレージ → データを削除</b>、またはアプリの削除により、すべての情報をすぐに消去できます。</li>
+    <li>他のフォルダに保存したバックアップファイルと、電話アプリに復元した通話履歴はアプリを削除しても残るため、必要に応じてご自身で削除してください。</li>
+    <li>開発者は情報を収集しないため、開発者側で保管・削除する情報はありません。</li>
+  </ul>
+
+  <h2>5. 子どもの情報</h2>
+  <p>本アプリは子どもを対象としておらず、子どもを含む誰の情報も収集しません。</p>
+
+  <h2>6. ポリシーの変更</h2>
+  <p>本ポリシーを変更する場合は、このページに掲載し、下記の施行日を更新します。アプリが処理する情報の種類や目的が変わる場合は、アプリの更新内容でもお知らせします。</p>
+
+  <h2>7. お問い合わせ</h2>
+  <p>個人情報保護責任者: NMTT Co.<br>
+  メール: <a href="mailto:mcstarbig@gmail.com">mcstarbig@gmail.com</a></p>
+
+  <p class="meta">施行日: 2026年11月22日 · 以前のポリシー(2026年4月12日)は広告を含んでいた旧バージョンのアプリに関するものです。アプリ 1.1.0 で広告は完全に削除されました。</p>
+</section>
+</div>
+
+<script>
+(function(){
+  var langs=["ko","en","ja"];
+  function show(l){
+    if(langs.indexOf(l)<0) l="ko";
+    langs.forEach(function(x){
+      document.getElementById(x).classList.toggle("on",x===l);
+      var a=document.querySelector('.lang a[data-lang="'+x+'"]');
+      if(a) a.classList.toggle("on",x===l);
+    });
+    document.documentElement.lang=l;
+  }
+  var h=(location.hash||"").replace("#","");
+  var nav=(navigator.language||"ko").slice(0,2);
+  show(langs.indexOf(h)>=0?h:(langs.indexOf(nav)>=0?nav:"ko"));
+  window.addEventListener("hashchange",function(){show(location.hash.replace("#",""));});
+})();
+</script>
 </body>
 </html>
