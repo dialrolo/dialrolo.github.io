@@ -9,254 +9,272 @@
 <meta property="og:description" content="휴대폰이 지우기 전에 통화기록을 보관하고, 언제든 다시 꺼내 쓰세요.">
 <meta property="og:image" content="assets/icon-192.png">
 <link rel="icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<script>document.documentElement.classList.add('js');</script>
 <style>
-:root{
-  --ink:#1E2A38;
-  --ink-2:#3A4656;
-  --paper:#EDF0F4;
-  --card:#FFFFFF;
-  --line:#D8DEE6;
-  --muted:#5F6B7A;
-  --keep:#0D8576;
-  --keep-soft:#DDF1EE;
-  --drop:#C9443B;
-  --drop-soft:#F8E3E1;
-  --r-lg:28px;
-  --r-md:18px;
-  --r-sm:10px;
+/* Hallmark · shape: Split Studio · genre: editorial · theme: Almanac (deal 2/3, seed free-android-app-keeps-71a9·f6fe92f1·2026-11-24·r0) · redesign: full · job: try · draw: 447653
+ * hero: Counter · nav: edge-aligned (swapped from banner, the page has no announcement to carry) · footer: colophon block · imagery: the product · signature: the printed ledger in the hero, the Phone app's 2,000 against the archive's 6,254
+ * axes: mid/grotesk-sans/chromatic-magenta · posture: restrained · contrast: pass · fold: pass · copy: verbatim · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 · weakest: H, six moments as six tiles read as a template; set them as one switcher on the printed sheet so each screen holds one moment */
+/* Hallmark · by request · the moments set as a bento of six (the owner's brief: bento, hero, dashboard) · accent anchored to the app's own navy and teal, not the theme's magenta · body face sans to keep Hangul and Latin figures in one voice */
+/* Hallmark · waive 84 · the owner chose the drawn screens over the English test-data captures · the page is Korean first and the captures are English */
+/* Hallmark · waive 47c · six DialRolo moments drawn on the sheet as example screens · the owner chose them over English test-data captures of the backup app */
+/* Hallmark · waive 39b · the walkthrough player is one button covering the video poster · it plays the YouTube walkthrough on click */
+@import url("./tokens.css");
+@import url("./base.css");
+
+:root {
+  --color-on-ink: oklch(93.5% 0.008 245);
+  --color-on-ink-muted: oklch(78% 0.012 245);
+  --color-on-ink-rule: oklch(34% 0.018 245);
+  --nav-h: 64px;
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
-  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
-  font-feature-settings:"tnum" 1;
-}
-a{color:inherit}
-img{display:block;max-width:100%}
-:focus-visible{outline:3px solid var(--keep);outline-offset:3px;border-radius:6px}
-.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
 
 /* language switching */
-html[data-lang="ko"] [lang="en"]{display:none!important}
-html[data-lang="en"] [lang="ko"]{display:none!important}
+html[data-lang="ko"] [lang="en"] { display: none !important; }
+html[data-lang="en"] [lang="ko"] { display: none !important; }
+:lang(ko) { word-break: keep-all; }
+
+body { color: var(--color-ink-2); }
+.num { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; }
+.skip { position: absolute; left: var(--space-md); top: calc(-1 * var(--space-3xl)); z-index: var(--z-toast); padding: var(--space-xs) var(--space-md); background: var(--color-ink); color: var(--color-paper); }
+.skip:focus-visible { top: var(--space-md); }
+
+/* controls */
+.btn { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 48px; padding: 0 var(--space-lg); border: var(--rule-hair) solid var(--color-ink); border-radius: var(--radius-pill); background: transparent; color: var(--color-ink); font: 500 var(--text-md)/1 var(--font-display); white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.btn:hover { background: var(--color-paper-2); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.btn--primary { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-ink); }
+.btn--primary:hover { background: var(--color-accent-2); border-color: var(--color-accent-2); }
+.btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; border-color: var(--color-muted); color: var(--color-ink); background: transparent; }
+.btn small { font: 400 var(--text-sm)/1 var(--font-body); color: var(--color-muted); }
 
 /* nav */
-.nav{position:sticky;top:0;z-index:20;background:rgba(237,240,244,.86);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent}
-.nav.scrolled{border-bottom-color:var(--line)}
-.nav .wrap{display:flex;align-items:center;gap:20px;height:64px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:750;font-size:18px;letter-spacing:-.01em}
-.brand img{width:32px;height:32px;border-radius:9px}
-.nav-links{display:flex;gap:22px;margin-left:auto;font-size:15px}
-.nav-links a{text-decoration:none;color:var(--muted)}
-.nav-links a:hover{color:var(--ink)}
-.lang{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink)}
-@media (max-width:760px){.nav-links{display:none}.lang{margin-left:auto}}
+.nav { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: var(--color-paper); border-bottom: var(--rule-hair) solid transparent; transition: border-color var(--dur-short) var(--ease-out); }
+.nav.scrolled { border-bottom-color: var(--color-rule-2); }
+.nav .container { display: flex; align-items: center; gap: var(--space-lg); min-height: var(--nav-h); }
+.brand { display: flex; align-items: center; gap: var(--space-sm); text-decoration: none; font: 600 var(--text-lg)/1 var(--font-display); color: var(--color-ink); letter-spacing: var(--tracking-display); }
+.brand img { width: 32px; height: 32px; flex-shrink: 0; }
+.nav-links { display: flex; gap: var(--space-lg); margin-left: auto; font-size: var(--text-sm); }
+.nav-links a { text-decoration: none; color: var(--color-ink-2); white-space: nowrap; }
+.nav-links a:hover { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-accent); }
+.lang { min-height: 44px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-pill); background: transparent; color: var(--color-ink); font: 500 var(--text-sm)/1 var(--font-display); cursor: pointer; white-space: nowrap; transition: background-color var(--dur-short) var(--ease-out); }
+.lang:hover { background: var(--color-paper-2); }
+.lang:active { transform: translateY(1px); }
+@media (max-width: 60rem) { .nav-links { display: none; } .lang { margin-left: auto; } }
 
-/* hero */
-.hero{padding:56px 0 40px}
-.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
-h1{font-size:clamp(36px,5.4vw,62px);line-height:1.12;letter-spacing:-.035em;font-weight:800;margin:0 0 22px;word-break:keep-all;text-wrap:balance}
-.lead{font-size:19px;color:var(--ink-2);max-width:34em;margin:0 0 30px;word-break:keep-all}
-.cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;font-weight:650;font-size:16px;text-decoration:none;border:1px solid transparent}
-.btn-primary{background:var(--ink);color:#fff}
-.btn-primary:hover{background:var(--ink-2)}
-.btn-quiet{background:var(--card);border-color:var(--line);color:var(--muted);cursor:default}
-.btn small{font-weight:500;opacity:.75}
-.facts{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
-.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--ink-2)}
+/* hero: the download beside the ledger */
+.hero { padding-block: var(--space-2xl) var(--space-xl); }
+.hero .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+.hero h1 { font-size: var(--text-display-s); line-height: 1.08; letter-spacing: -0.03em; max-width: 13em; }
+.hero .lead { margin-top: var(--space-lg); color: var(--color-ink-2); max-width: 40ch; }
+.cta { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-xl); }
+.facts { display: flex; flex-wrap: wrap; gap: var(--space-2xs) var(--space-lg); margin: var(--space-lg) 0 0; padding: 0; list-style: none; font-size: var(--text-sm); color: var(--color-muted); }
+.facts li + li::before { content: ""; }
 
-/* hero dashboard widget */
-.panel{background:var(--card);border-radius:var(--r-lg);padding:28px;box-shadow:0 1px 0 var(--line),0 24px 48px -28px rgba(30,42,56,.35)}
-.panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px}
-.panel-head h2{font-size:17px;margin:0;font-weight:700}
-.panel-head span{font-size:13px;color:var(--muted)}
-.meter{margin-bottom:22px}
-.meter-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.meter-name{font-weight:650;font-size:15px}
-.meter-num{font-size:34px;font-weight:800;letter-spacing:-.03em}
-.meter-num small{font-size:15px;font-weight:600;color:var(--muted);margin-left:4px}
-.track{position:relative;height:14px;border-radius:7px;background:#EEF1F5;overflow:hidden}
-.fill{position:absolute;inset:0 auto 0 0;border-radius:7px}
-.fill.phone{background:var(--ink-2);width:32%}
-.fill.keep{background:var(--keep);width:100%}
-.cap{position:absolute;top:-4px;bottom:-4px;left:32%;width:2px;background:var(--drop)}
-.meter-note{font-size:13.5px;color:var(--muted);margin-top:8px}
-.meter-note b{color:var(--drop);font-weight:650}
-.meter-note.ok b{color:var(--keep)}
-.drops{display:flex;gap:6px;margin-top:10px;height:22px;align-items:center}
-.drops i{width:22px;height:8px;border-radius:4px;background:var(--drop-soft)}
-.panel-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--line);padding-top:18px}
-.panel-foot div{font-size:13px;color:var(--muted)}
-.panel-foot strong{display:block;font-size:20px;color:var(--ink);font-weight:750;letter-spacing:-.02em}
-.example{font-size:12.5px;color:var(--muted);margin-top:14px;text-align:right}
-
-@media (prefers-reduced-motion:no-preference){
-  .anim .fill.phone{animation:grow 1.2s cubic-bezier(.2,.7,.2,1) both}
-  .anim .fill.keep{animation:growK 2.2s cubic-bezier(.2,.7,.2,1) .3s both}
-  .anim .drops i{animation:drop 2.4s ease-in 1.2s infinite}
-  .anim .drops i:nth-child(2){animation-delay:1.6s}
-  .anim .drops i:nth-child(3){animation-delay:2s}
-  .anim .drops i:nth-child(4){animation-delay:2.4s}
-}
-@keyframes grow{from{width:0}}
-@keyframes growK{from{width:0}}
-@keyframes drop{0%{opacity:1;transform:none}70%{opacity:0;transform:translateY(14px)}100%{opacity:0;transform:translateY(14px)}}
-
-@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
+/* the sheet: the product's own page, printed */
+.sheet { background: var(--color-sheet); border-top: var(--rule-bar) solid var(--color-ink); padding: var(--space-xl); min-width: 0; }
+.sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-md); padding-bottom: var(--space-sm); border-bottom: var(--rule-bar) solid var(--color-rule-2); }
+.sheet-head h2 { font-size: var(--text-xl); max-width: none; }
+.caption { font-size: var(--text-sm); color: var(--color-muted); }
+.ledger { width: 100%; border-collapse: collapse; }
+.ledger th { font: 500 var(--text-sm)/1.3 var(--font-body); color: var(--color-muted); text-align: left; padding: var(--space-md) 0 var(--space-xs); }
+.ledger th.num { text-align: right; }
+.ledger td { border-top: var(--rule-hair) solid var(--color-rule); padding: var(--space-lg) 0; vertical-align: top; }
+.ledger .who { font: 600 var(--text-lg)/1.2 var(--font-display); color: var(--color-ink); }
+.ledger .count { text-align: right; font: 500 var(--text-3xl)/1 var(--font-outlier); font-variant-numeric: tabular-nums; letter-spacing: -0.04em; color: var(--color-ink); white-space: nowrap; }
+.ledger .count small { font: 400 var(--text-sm)/1 var(--font-body); letter-spacing: 0; color: var(--color-muted); margin-left: var(--space-2xs); }
+.track { position: relative; height: 12px; margin-top: var(--space-md); background: var(--color-paper-2); }
+.fill { position: absolute; inset: 0; transform-origin: left center; }
+.fill.phone { background: var(--color-ink-2); transform: scaleX(0.32); }
+.fill.keep { background: var(--color-accent); }
+.cap { position: absolute; top: calc(-1 * var(--space-2xs)); bottom: calc(-1 * var(--space-2xs)); left: 32%; width: 2px; background: var(--color-ink); }
+.note { margin-top: var(--space-xs); font-size: var(--text-sm); color: var(--color-muted); }
+.note b { font-weight: 500; color: var(--color-ink); }
+.sheet-foot { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border-top: var(--rule-bar) solid var(--color-rule-2); }
+.sheet-foot div { padding: var(--space-md) var(--space-md) 0; border-left: var(--rule-hair) solid var(--color-rule); }
+.sheet-foot div:first-child { padding-left: 0; border-left: 0; }
+.sheet-foot dt { font-size: var(--text-sm); color: var(--color-muted); }
+.sheet-foot dd { margin: var(--space-2xs) 0 0; font: 500 var(--text-lg)/1.2 var(--font-outlier); color: var(--color-ink); white-space: nowrap; }
+.sheet-foot dd:lang(ko), .sheet-foot dd:lang(en) { font-family: var(--font-display); }
+.sheet-foot dd.num { font-family: var(--font-outlier); }
+.hero .caption { margin-top: var(--space-sm); }
+.hero .sheet { padding: var(--space-2xl) var(--space-xl); }
+.hero .ledger td { padding: var(--space-xl) 0; }
+.hero .track { height: 16px; }
 
 /* sections */
-section{padding:56px 0}
-.sec-head{max-width:640px;margin-bottom:30px}
-.sec-head h2{font-size:clamp(28px,3.4vw,40px);line-height:1.2;letter-spacing:-.03em;margin:0 0 10px;font-weight:800;word-break:keep-all}
-.sec-head p{margin:0;color:var(--muted);font-size:17.5px;word-break:keep-all}
+.sec { padding-block: var(--section-gap); }
+.sec-head { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--gap-columns); align-items: end; margin-bottom: var(--space-xl); }
+.sec-head p { font-size: var(--text-lead); line-height: 1.45; color: var(--color-ink-2); max-width: 36ch; }
 
-/* bento */
-.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
-.tile{background:var(--card);border-radius:var(--r-md);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0}
-.tile h3{font-size:22px;line-height:1.3;letter-spacing:-.02em;margin:0;font-weight:750;word-break:keep-all}
-.tile p{margin:0;color:var(--ink-2);font-size:16px;word-break:keep-all}
-.t-move{grid-column:span 4}
-.t-undo{grid-column:span 2;grid-row:span 2}
-.t-find,.t-auto{grid-column:span 2}
-.t-pw{grid-column:span 2}
-.t-dash{grid-column:span 4}
-.t-safe{grid-column:span 6;background:var(--ink);color:#fff;flex-direction:row;align-items:center;gap:32px}
-.t-safe h3{flex:0 0 280px}
-.t-safe .lock{flex-direction:row;flex-wrap:wrap;gap:12px 28px}
-.t-safe .lock li{flex:1 1 220px}
-.t-safe p{color:#C9D2DE}
-@media (max-width:980px){
-  .bento{grid-template-columns:repeat(2,1fr)}
-  .t-move,.t-dash{grid-column:span 2}
-  .t-undo{grid-column:span 2;grid-row:auto}
-  .t-find,.t-auto,.t-pw{grid-column:span 1}
-  .t-safe{grid-column:span 2;flex-direction:column;align-items:stretch}
-  .t-safe h3{flex:none}
-}
-@media (max-width:620px){
-  .bento{grid-template-columns:1fr}
-  .t-move,.t-dash,.t-undo,.t-find,.t-auto,.t-pw,.t-safe{grid-column:auto}
-}
+/* moments: a bento of six, all visible at once */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--gap-columns); }
+.tile { display: flex; flex-direction: column; gap: var(--space-lg); min-width: 0; padding: var(--space-xl); background: var(--color-sheet); border-top: var(--rule-bar) solid var(--color-ink); }
+.tile h3 { font-size: var(--text-xl); line-height: 1.25; max-width: 22em; }
+.tile .say { font-size: var(--text-md); line-height: 1.65; color: var(--color-ink-2); max-width: 46ch; }
+.tile .piece { margin-top: auto; display: flex; flex-direction: column; gap: var(--space-md); }
+.t-move { grid-column: span 4; }
+.t-undo { grid-column: span 2; grid-row: span 2; }
+.t-find, .t-auto, .t-pw { grid-column: span 2; }
+.t-dash { grid-column: span 4; }
+.t-move .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); }
+.t-move .steps li { grid-template-columns: minmax(0, 1fr); align-content: start; gap: var(--space-xs); padding: var(--space-md) 0 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.t-move .steps li:first-child { border-top: var(--rule-hair) solid var(--color-rule); padding-top: var(--space-md); }
+.t-dash .piece { flex-direction: row; gap: var(--space-xl); align-items: stretch; }
+.t-dash .dash { flex: 1 1 0; min-width: 0; }
+.t-dash .bars { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.t-dash .bars div { margin-top: auto; }
 
-/* mini UI pieces */
-.mini{background:var(--paper);border-radius:var(--r-sm);padding:14px;font-size:14px}
-.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;counter-reset:s}
-.steps li{background:var(--paper);border-radius:var(--r-sm);padding:16px;counter-increment:s;font-size:15px;word-break:keep-all}
-.steps li::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;font-size:14px;margin-bottom:10px}
-.steps b{display:block;margin-bottom:2px}
-.steps span{color:var(--muted);font-size:14px}
-@media (max-width:620px){.steps{grid-template-columns:1fr}}
-.file{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:6px 10px;font-size:13px;color:var(--ink-2);margin-top:6px;word-break:break-all}
-.file::before{content:"";width:12px;height:14px;border-radius:2px;background:var(--keep)}
+/* the moment pieces, all on the sheet */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.steps li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: var(--space-md); padding: var(--space-md) 0; border-top: var(--rule-hair) solid var(--color-rule); counter-increment: s; }
+.steps li:first-child { border-top: 0; padding-top: 0; }
+.steps li::before { content: counter(s); font: 500 var(--text-2xl)/1 var(--font-outlier); color: var(--color-ink); }
+.steps b { display: block; font: 600 var(--text-lg)/1.3 var(--font-display); color: var(--color-ink); }
+.steps span { display: block; color: var(--color-muted); margin-top: var(--space-2xs); }
+.file { display: inline-block; margin-top: var(--space-xs); padding: var(--space-2xs) var(--space-xs); background: var(--color-paper-2); font: 400 var(--text-sm)/1.4 var(--font-outlier); color: var(--color-ink); overflow-wrap: anywhere; }
 
-.dialog{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 12px 30px -16px rgba(30,42,56,.45);border:1px solid var(--line)}
-.dialog h4{margin:0 0 10px;font-size:16px}
-.dialog ul{margin:0 0 16px;padding-left:18px;font-size:14px;color:var(--ink-2)}
-.dialog ul li::marker{color:var(--keep)}
-.dialog .act{display:flex;justify-content:flex-end;gap:10px;font-size:14px;font-weight:650}
-.dialog .act span{padding:8px 14px;border-radius:999px}
-.dialog .act span:last-child{background:var(--ink);color:#fff}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin-bottom:12px}
-.check i{flex:none;width:18px;height:18px;border-radius:5px;background:var(--ink);position:relative;margin-top:2px}
-.check i::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
-.undo-stack{display:flex;flex-direction:column;gap:12px;margin-top:auto}
+.check { display: flex; gap: var(--space-sm); align-items: center; color: var(--color-ink); font-weight: 500; }
+.check i { flex: none; width: 20px; height: 20px; background: var(--color-ink); position: relative; }
+.check i::after { content: ""; position: absolute; left: 7px; top: 3px; width: 5px; height: 10px; border: solid var(--color-sheet); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.dialog { border-top: var(--rule-bar) solid var(--color-ink); padding-top: var(--space-md); }
+.dialog h4 { margin: 0 0 var(--space-sm); font: 600 var(--text-lg)/1.3 var(--font-display); color: var(--color-ink); }
+.dialog ul { margin: 0; padding: 0; list-style: none; }
+.dialog li { padding: var(--space-xs) 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.dialog .act { display: flex; justify-content: flex-end; gap: var(--space-lg); margin-top: var(--space-md); font: 500 var(--text-md)/1 var(--font-display); color: var(--color-ink); }
+.dialog .act span:last-child { color: var(--color-accent); }
 
-.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;color:var(--muted);font-size:14px;margin-bottom:10px}
-.search::before{content:"";width:12px;height:12px;border:2px solid var(--muted);border-radius:50%}
-.hit{display:flex;justify-content:space-between;gap:10px;background:var(--card);border-radius:10px;padding:10px 12px;font-size:14px}
-.hit em{font-style:normal;color:var(--muted);white-space:nowrap}
-.hit + .hit{margin-top:6px}
-.tag{font-size:12px;font-weight:650;border-radius:6px;padding:1px 7px;margin-left:6px}
-.tag.in{background:var(--keep-soft);color:var(--keep)}
-.tag.miss{background:var(--drop-soft);color:var(--drop)}
+.search { display: flex; align-items: center; min-height: 48px; padding: 0 var(--space-md); border: var(--rule-hair) solid var(--color-muted); border-radius: var(--radius-pill); color: var(--color-muted); }
+.hits { width: 100%; border-collapse: collapse; }
+.hits td { padding: var(--space-md) 0; border-top: var(--rule-hair) solid var(--color-rule); vertical-align: baseline; }
+.hits td:first-child { color: var(--color-ink); font-weight: 500; }
+.hits td.when { text-align: right; color: var(--color-muted); white-space: nowrap; }
+.tag { display: inline-block; margin-left: var(--space-xs); padding: 0 var(--space-xs); border: var(--rule-hair) solid var(--color-rule-2); border-radius: var(--radius-pill); font-size: var(--text-sm); font-weight: 500; color: var(--color-ink); }
+.tag.miss { border-color: var(--color-error); color: var(--color-error); }
+.phone-no { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; }
 
-.switch{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:10px;padding:12px 14px;font-weight:600;font-size:15px}
-.switch i{width:44px;height:26px;border-radius:13px;background:var(--keep);position:relative}
-.switch i::after{content:"";position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff}
-.toast{margin-top:8px;background:var(--ink);color:#fff;border-radius:10px;padding:10px 12px;font-size:13.5px}
+.switch { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); padding-bottom: var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); color: var(--color-ink); font: 500 var(--text-lg)/1.3 var(--font-display); }
+.switch i { flex: none; width: 48px; height: 28px; background: var(--color-accent); position: relative; border-radius: var(--radius-pill); }
+.switch i::after { content: ""; position: absolute; right: 4px; top: 4px; width: 20px; height: 20px; background: var(--color-accent-ink); border-radius: var(--radius-pill); }
+.toast { background: var(--color-ink); color: var(--color-on-ink); padding: var(--space-md) var(--space-lg); }
 
-.code{font-size:clamp(15px,1.6vw,19px);white-space:nowrap;font-weight:750;letter-spacing:.04em;text-align:center;background:var(--card);border:1px dashed var(--ink-2);border-radius:10px;padding:12px;font-variant-numeric:tabular-nums}
+.code { font: 500 clamp(1rem, 0.6rem + 1vw, 1.375rem)/1.2 var(--font-outlier); color: var(--color-ink); text-align: center; padding: var(--space-lg) var(--space-md); border-top: var(--rule-bar) solid var(--color-ink); border-bottom: var(--rule-hair) solid var(--color-rule); white-space: nowrap; overflow-wrap: normal; }
 
-.dash{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.kpi{background:var(--paper);border-radius:var(--r-sm);padding:14px}
-.kpi span{display:block;font-size:13px;color:var(--muted)}
-.kpi strong{font-size:24px;font-weight:800;letter-spacing:-.02em}
-.bars{grid-column:span 2;background:var(--paper);border-radius:var(--r-sm);padding:14px;display:flex;flex-direction:column}
-.bars span{font-size:13px;color:var(--muted)}
-.bars div{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:auto}
-.bars b{flex:1;background:var(--ink-2);border-radius:3px 3px 0 0}
-.bars b.hi{background:var(--keep)}
-@media (max-width:620px){
-  .dash{grid-template-columns:1fr 1fr}
-  .kpi strong{font-size:20px;white-space:nowrap}
-  .panel{padding:22px}
-  .panel-foot strong{font-size:16px;white-space:nowrap}
-  .player button{padding:16px}
-  .player strong{font-size:16px}
-  .player small{display:none}
-  .play{width:56px;height:56px;top:40%}
-  .play::after{border-left-width:18px;border-top-width:11px;border-bottom-width:11px;margin-left:4px}
-}
+.dash { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+.dash div { padding: var(--space-md) 0; border-top: var(--rule-hair) solid var(--color-rule); }
+.dash div:nth-child(even) { padding-left: var(--space-lg); border-left: var(--rule-hair) solid var(--color-rule); }
+.dash dt { font-size: var(--text-sm); color: var(--color-muted); }
+.dash dd { margin: var(--space-2xs) 0 0; font: 600 var(--text-2xl)/1.1 var(--font-display); color: var(--color-ink); }
+.dash dd.num { font: 500 var(--text-2xl)/1.1 var(--font-outlier); }
+.bars { border-top: var(--rule-bar) solid var(--color-rule-2); padding-top: var(--space-sm); }
+.bars span { font-size: var(--text-sm); color: var(--color-muted); }
+.bars div { display: flex; align-items: flex-end; gap: var(--space-2xs); height: 96px; margin-top: var(--space-xs); border-bottom: var(--rule-hair) solid var(--color-ink); }
+.bars b { flex: 1; background: var(--color-ink-2); }
+.bars b.hi { background: var(--color-accent); }
 
-.lock{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
-.lock li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:#E6EBF1}
-.lock li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#5FD1C1;margin-top:9px}
+/* the ink band: where the calls go */
+.band-ink { background: var(--color-ink); color: var(--color-on-ink); padding-block: var(--section-gap-s); }
+.band-ink .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: start; }
+.band-ink h2 { color: var(--color-on-ink); max-width: 12em; }
+.lock { list-style: none; margin: 0; padding: 0; border-top: var(--rule-bar) solid var(--color-on-ink-muted); }
+.lock li { display: grid; padding: var(--space-lg) 0; border-bottom: var(--rule-hair) solid var(--color-on-ink-rule); font-size: var(--text-lg); line-height: 1.5; color: var(--color-on-ink); }
 
 /* video */
-.video{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
-.player{position:relative;aspect-ratio:16/9;border-radius:var(--r-md);overflow:hidden;background:var(--ink);color:#fff}
-.player button{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:28px;background:
-  radial-gradient(circle at 78% 40%,rgba(95,209,193,.22),transparent 45%),var(--ink)}
-.player button:focus-visible{outline:3px solid #5FD1C1;outline-offset:-6px}
-.play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center}
-.play::after{content:"";margin-left:6px;border-left:24px solid var(--ink);border-top:15px solid transparent;border-bottom:15px solid transparent}
-.player strong{font-size:22px;letter-spacing:-.02em}
-.player small{color:#C9D2DE;font-size:14px}
-.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.chapters{background:var(--card);border-radius:var(--r-md);padding:22px;margin:0;list-style:none;display:flex;flex-direction:column;gap:4px}
-.chapters li button{all:unset;cursor:pointer;display:grid;grid-template-columns:52px 1fr;gap:10px;width:100%;padding:9px 10px;border-radius:10px;font-size:15px;box-sizing:border-box;word-break:keep-all}
-.chapters li button:hover{background:var(--paper)}
-.chapters li button:focus-visible{outline:3px solid var(--keep)}
-.chapters time{color:var(--keep);font-weight:700}
-.chapters .key time{color:var(--drop)}
-.vnote{font-size:13.5px;color:var(--muted);margin:10px 4px 0}
-@media (max-width:900px){.video{grid-template-columns:1fr}}
+.video { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--gap-columns); align-items: start; }
+.player { position: relative; aspect-ratio: 16/9; background: var(--color-ink); color: var(--color-on-ink); }
+.player button { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; gap: var(--space-2xs); padding: var(--space-xl); border: 0; background: transparent; color: inherit; text-align: left; cursor: pointer; }
+.player button:focus-visible { outline: 2px solid var(--color-on-ink); outline-offset: -6px; }
+.player button:hover .play { background: var(--color-accent-2); }
+.player button:active .play { transform: translate(-50%, -50%) scale(0.98); }
+.play { position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%); width: 88px; height: 88px; border-radius: var(--radius-pill); background: var(--color-accent); display: grid; place-items: center; transition: background-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.play::after { content: ""; margin-left: var(--space-2xs); width: 0; height: 0; border-style: solid; border-width: 15px 0 15px 24px; border-color: transparent transparent transparent var(--color-accent-ink); }
+.player strong { font: 600 var(--text-title)/1.2 var(--font-display); color: var(--color-on-ink); }
+.player small { font-size: var(--text-sm); color: var(--color-on-ink-muted); }
+.player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.chapters { list-style: none; margin: 0; padding: 0; border-top: var(--rule-bar) solid var(--color-rule-2); }
+.chapters li { border-bottom: var(--rule-hair) solid var(--color-rule); }
+.chapters button { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--space-sm); width: 100%; min-height: 48px; padding: var(--space-sm) var(--space-xs) var(--space-sm) 0; border: 0; background: transparent; color: var(--color-ink); text-align: left; cursor: pointer; transition: background-color var(--dur-short) var(--ease-out); }
+.chapters button:hover { background: var(--color-paper-2); }
+.chapters button:active { transform: translateY(1px); }
+.chapters button:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.chapters time { font-family: var(--font-outlier); font-variant-numeric: tabular-nums; color: var(--color-muted); text-align: right; }
+.chapters .key time { color: var(--color-accent); font-weight: 500; }
+.vnote { margin-top: var(--space-md); font-size: var(--text-sm); color: var(--color-muted); }
 
-/* faq */
-.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-details{background:var(--card);border-radius:var(--r-md);padding:0 22px}
-summary{cursor:pointer;list-style:none;padding:20px 0;font-weight:700;font-size:17px;display:flex;justify-content:space-between;gap:12px;word-break:keep-all}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:22px;line-height:1;color:var(--muted);transition:transform .2s}
-details[open] summary::after{transform:rotate(45deg)}
-details p{margin:0 0 20px;color:var(--ink-2);font-size:16px;word-break:keep-all}
-@media (max-width:760px){.faq{grid-template-columns:1fr}}
+/* faq: rows beside the head */
+.faq-wrap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gap-columns); align-items: start; }
+.faq-wrap h2 { position: sticky; top: calc(var(--nav-h) + var(--space-lg)); }
+.faq { border-top: var(--rule-bar) solid var(--color-rule-2); }
+details { border-bottom: var(--rule-hair) solid var(--color-rule); }
+summary { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); min-height: 72px; padding: var(--space-md) 0; cursor: pointer; list-style: none; font: 600 var(--text-lg)/1.35 var(--font-display); color: var(--color-ink); }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; flex: none; font: 400 var(--text-2xl)/1 var(--font-outlier); color: var(--color-muted); transition: transform var(--dur-short) var(--ease-out); }
+summary:hover { color: var(--color-accent-2); }
+summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+details[open] summary::after { transform: rotate(45deg); }
+details p { padding-bottom: var(--space-lg); font-size: var(--text-lg); line-height: 1.6; max-width: 60ch; }
 
-/* get */
-.get{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:44px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}
-.get img{width:88px;height:88px;border-radius:22px}
-.get h2{margin:0 0 6px;font-size:30px;letter-spacing:-.03em}
-.get p{margin:0;color:#C9D2DE}
-.get .btn-primary{background:#fff;color:var(--ink)}
-.get .btn-primary:hover{background:#E6EBF1}
-.get .btn-quiet{background:transparent;border-color:#4A5668;color:#C9D2DE}
-.get .cta{margin:0;flex-direction:column}
-@media (max-width:860px){.get{grid-template-columns:1fr;padding:32px}}
+/* close: the download, store by store */
+.get { background: var(--color-paper-2); border-top: var(--rule-bar) solid var(--color-rule-2); padding-block: var(--section-gap-s); }
+.get .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); align-items: center; }
+.get-head { display: grid; grid-template-columns: 88px minmax(0, 1fr); gap: var(--space-lg); align-items: start; }
+.get-head img { width: 88px; height: 88px; }
+.get-head p { margin-top: var(--space-md); font-size: var(--text-lg); }
+.stores { width: 100%; border-collapse: collapse; }
+.stores th { font: 500 var(--text-sm)/1.3 var(--font-body); color: var(--color-muted); text-align: left; padding-bottom: var(--space-xs); border-bottom: var(--rule-bar) solid var(--color-rule-2); }
+.stores td { padding: var(--space-lg) 0; border-bottom: var(--rule-hair) solid var(--color-rule); vertical-align: middle; }
+.stores .store { font: 600 var(--text-title)/1.2 var(--font-display); color: var(--color-ink); }
+.stores td:last-child { text-align: right; }
+.stores .req { color: var(--color-ink-2); }
 
-footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
-footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
-footer a{color:var(--ink-2)}
+/* footer: colophon */
+footer { padding-block: var(--space-2xl) var(--space-3xl); border-top: var(--rule-bar) solid var(--color-rule-2); }
+footer .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-3xl); }
+.colophon-mark { font: 600 var(--text-2xl)/1 var(--font-display); color: var(--color-ink); letter-spacing: var(--tracking-display); }
+.colophon { font-size: var(--text-md); line-height: 1.8; color: var(--color-ink-2); }
+.colophon a { color: var(--color-ink); text-decoration-color: var(--color-accent); }
+.colophon a:hover { text-decoration-thickness: 2px; }
+
+@media (max-width: 60rem) {
+  .hero { min-height: 0; }
+  .hero .container, .band-ink .container, .get .container, footer .container, .faq-wrap, .video, .sec-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-xl); }
+  .faq-wrap h2 { position: static; }
+  .sheet { padding: var(--space-lg); }
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .t-move, .t-dash, .t-undo { grid-column: span 2; grid-row: auto; }
+  .t-find, .t-auto, .t-pw { grid-column: span 1; }
+  .tile { padding: var(--space-lg); }
+}
+@media (max-width: 40rem) {
+  .bento { grid-template-columns: minmax(0, 1fr); }
+  .t-move, .t-dash, .t-undo, .t-find, .t-auto, .t-pw { grid-column: auto; }
+  .t-move .steps { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .t-dash .piece { flex-direction: column; }
+  .ledger .count { font-size: var(--text-2xl); }
+  .sheet-foot dd { font-size: var(--text-md); white-space: normal; }
+  .sheet-foot div { padding-inline: var(--space-xs); }
+  .code { font-size: var(--text-lg); }
+  .player button { padding: var(--space-md); }
+  .player small { display: none; }
+  .play { width: 56px; height: 56px; top: 40%; }
+  .play::after { border-width: 11px 0 11px 18px; }
+  .get-head { grid-template-columns: 56px minmax(0, 1fr); }
+  .get-head img { width: 56px; height: 56px; }
+  .stores td:last-child .btn { padding: 0 var(--space-md); }
+}
 </style>
 </head>
 <body>
+<a class="skip" href="#top"><span lang="ko">본문으로 건너뛰기</span><span lang="en">Skip to content</span></a>
 
 <header class="nav" id="nav">
-  <div class="wrap">
-    <a class="brand" href="#top"><img src="assets/icon-192.png" alt="" width="32" height="32">DialRolo</a>
+  <div class="container">
+    <a class="brand" href="#top" aria-label="DialRolo"><img src="assets/icon-192.png" alt="" width="32" height="32">DialRolo</a>
     <nav class="nav-links" aria-label="Page">
       <a href="#uses"><span lang="ko">이럴 때 써요</span><span lang="en">When you need it</span></a>
       <a href="#video"><span lang="ko">사용법 영상</span><span lang="en">Watch how</span></a>
@@ -269,7 +287,7 @@ footer a{color:var(--ink-2)}
 
 <main id="top">
   <section class="hero">
-    <div class="wrap">
+    <div class="container">
       <div>
         <h1>
           <span lang="ko">휴대폰이 지우기 전에, 통화기록을 챙겨 두세요</span>
@@ -280,10 +298,10 @@ footer a{color:var(--ink-2)}
           <span lang="en">Most phones keep about 2,000 calls and quietly delete the oldest. DialRolo saves them before they go, so you can bring them back when you switch phones or delete one by mistake.</span>
         </p>
         <div class="cta">
-          <a class="btn btn-primary" href="https://m.onestore.co.kr/v2/ko-kr/app/0001005958" target="_blank" rel="noopener">
+          <a class="btn btn--primary" href="https://m.onestore.co.kr/v2/ko-kr/app/0001005958" target="_blank" rel="noopener">
             <span lang="ko">원스토어에서 받기</span><span lang="en">Get it on ONE Store</span>
           </a>
-          <span class="btn btn-quiet" aria-disabled="true">
+          <span class="btn" aria-disabled="true">
             Google Play <small lang="ko">준비 중</small><small lang="en">coming soon</small>
           </span>
         </div>
@@ -294,130 +312,145 @@ footer a{color:var(--ink-2)}
         </ul>
       </div>
 
-      <div class="panel anim" aria-label="Example: calls kept by the Phone app and by DialRolo">
-        <div class="panel-head">
-          <h2><span lang="ko">내 통화기록, 어디에 얼마나</span><span lang="en">Where your calls are</span></h2>
-          <span lang="ko">예시 화면</span><span lang="en">Example</span>
-        </div>
-
-        <div class="meter">
-          <div class="meter-row">
-            <span class="meter-name"><span lang="ko">전화 앱</span><span lang="en">Phone app</span></span>
-            <span class="meter-num">2,000<small lang="ko">건</small><small lang="en">calls</small></span>
+      <figure style="margin:0">
+        <div class="sheet" aria-label="Example: calls kept by the Phone app and by DialRolo">
+          <div class="sheet-head">
+            <h2><span lang="ko">내 통화기록, 어디에 얼마나</span><span lang="en">Where your calls are</span></h2>
           </div>
-          <div class="track"><div class="fill phone"></div><div class="cap"></div></div>
-          <div class="meter-note"><span lang="ko"><b>한도에 닿으면</b> 오래된 통화부터 사라져요</span><span lang="en"><b>At the limit,</b> the oldest calls disappear</span></div>
-          <div class="drops" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <table class="ledger">
+            <tbody>
+              <tr>
+                <td>
+                  <span class="who"><span lang="ko">전화 앱</span><span lang="en">Phone app</span></span>
+                  <div class="track" aria-hidden="true"><div class="fill phone"></div><div class="cap"></div></div>
+                  <p class="note"><span lang="ko"><b>한도에 닿으면</b> 오래된 통화부터 사라져요</span><span lang="en"><b>At the limit,</b> the oldest calls disappear</span></p>
+                </td>
+                <td class="count">2,000<small lang="ko">건</small><small lang="en">calls</small></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="who">DialRolo</span>
+                  <div class="track" aria-hidden="true"><div class="fill keep"></div></div>
+                  <p class="note"><span lang="ko"><b>전화 앱보다 4,254건 더</b> 보관 중</span><span lang="en"><b>4,254 more calls</b> than the Phone app</span></p>
+                </td>
+                <td class="count" id="keepNum">6,254<small lang="ko">건</small><small lang="en">calls</small></td>
+              </tr>
+            </tbody>
+          </table>
+          <dl class="sheet-foot">
+            <div><dt><span lang="ko">마지막 백업</span><span lang="en">Last backup</span></dt><dd lang="ko">오늘 02:00</dd><dd lang="en">Today 02:00</dd></div>
+            <div><dt><span lang="ko">보관 시작</span><span lang="en">Kept since</span></dt><dd class="num">2025.07</dd></div>
+            <div><dt><span lang="ko">백업 파일</span><span lang="en">Backup file</span></dt><dd lang="ko">암호화됨</dd><dd lang="en">Encrypted</dd></div>
+          </dl>
         </div>
-
-        <div class="meter">
-          <div class="meter-row">
-            <span class="meter-name">DialRolo</span>
-            <span class="meter-num" id="keepNum">6,254<small lang="ko">건</small><small lang="en">calls</small></span>
-          </div>
-          <div class="track"><div class="fill keep"></div></div>
-          <div class="meter-note ok"><span lang="ko"><b>전화 앱보다 4,254건 더</b> 보관 중</span><span lang="en"><b>4,254 more calls</b> than the Phone app</span></div>
-        </div>
-
-        <div class="panel-foot">
-          <div><span lang="ko">마지막 백업</span><span lang="en">Last backup</span><strong lang="ko">오늘 02:00</strong><strong lang="en">Today 02:00</strong></div>
-          <div><span lang="ko">보관 시작</span><span lang="en">Kept since</span><strong>2025.07</strong></div>
-          <div><span lang="ko">백업 파일</span><span lang="en">Backup file</span><strong lang="ko">암호화됨</strong><strong lang="en">Encrypted</strong></div>
-        </div>
-      </div>
+        <figcaption class="caption"><span lang="ko">예시 화면</span><span lang="en">Example</span></figcaption>
+      </figure>
     </div>
   </section>
 
-  <section id="uses">
-    <div class="wrap">
+  <section class="sec" id="uses">
+    <div class="container">
       <div class="sec-head">
         <h2><span lang="ko">이럴 때 DialRolo가 있으면 달라요</span><span lang="en">Moments when DialRolo makes a difference</span></h2>
         <p><span lang="ko">기능 목록보다 실제로 겪는 순간부터 보세요.</span><span lang="en">Start with the moments you actually run into.</span></p>
       </div>
 
       <div class="bento">
-        <article class="tile t-move">
+
+      <article class="tile t-move" id="m-move">
           <h3><span lang="ko">폰을 바꿨는데, 통화기록은 그대로 가져가고 싶어요</span><span lang="en">New phone, same call history</span></h3>
+        <div class="piece">
           <ol class="steps">
-            <li><b lang="ko">옛 폰에서 지금 백업</b><b lang="en">Back up on the old phone</b><span lang="ko">비밀번호로 잠긴 .rolo 파일이 생겨요</span><span lang="en">You get a password-locked .rolo file</span>
-              <div class="file">DialRolo_Manual_20261123_0930.rolo</div></li>
-            <li><b lang="ko">파일을 새 폰으로</b><b lang="en">Move the file</b><span lang="ko">구글 드라이브, USB, 메일 첨부 등 편한 방법으로</span><span lang="en">Drive, USB or email, whatever is easiest</span></li>
-            <li><b lang="ko">새 폰에서 파일로 복원</b><b lang="en">Restore on the new phone</b><span lang="ko">몇 년 치 기록과 설정이 그대로 옮겨와요</span><span lang="en">Years of calls and your settings come along</span></li>
+            <li><div><b lang="ko">옛 폰에서 지금 백업</b><b lang="en">Back up on the old phone</b><span lang="ko">비밀번호로 잠긴 .rolo 파일이 생겨요</span><span lang="en">You get a password-locked .rolo file</span>
+              <code class="file">DialRolo_Manual_20261123_0930.rolo</code></div></li>
+            <li><div><b lang="ko">파일을 새 폰으로</b><b lang="en">Move the file</b><span lang="ko">구글 드라이브, USB, 메일 첨부 등 편한 방법으로</span><span lang="en">Drive, USB or email, whatever is easiest</span></div></li>
+            <li><div><b lang="ko">새 폰에서 파일로 복원</b><b lang="en">Restore on the new phone</b><span lang="ko">몇 년 치 기록과 설정이 그대로 옮겨와요</span><span lang="en">Years of calls and your settings come along</span></div></li>
           </ol>
-        </article>
+        </div>
+      </article>
 
-        <article class="tile t-undo">
+      <article class="tile t-undo" id="m-undo">
           <h3><span lang="ko">실수로 지운 통화를 전화 앱에 되살리고 싶어요</span><span lang="en">Put a deleted call back in the Phone app</span></h3>
-          <p><span lang="ko">복원할 때 "전화 앱 통화기록에도 복원"을 체크하면, 휴대폰 기본 전화 앱에도 다시 들어가요. 넣기 전에 몇 건인지 먼저 보여 주고, 이미 있는 통화는 건너뛰어요.</span><span lang="en">Check "Also restore to the Phone app call history" and the calls go back into your phone's own call log. You see the count first, and calls already there are skipped.</span></p>
-          <div class="undo-stack">
-            <div class="check"><i></i><span lang="ko">전화 앱 통화기록에도 복원</span><span lang="en">Also restore to the Phone app call history</span></div>
-            <div class="dialog" role="img" aria-label="Restore preview dialog">
-              <h4 lang="ko">전화 앱에 3건을 복원합니다</h4><h4 lang="en">Restore 3 calls to the Phone app</h4>
-              <ul>
-                <li lang="ko">전화 앱에 없는 통화 3건</li><li lang="en">3 calls missing from the Phone app</li>
-                <li lang="ko">이미 있는 통화 42건은 건너뜀</li><li lang="en">42 calls already there are skipped</li>
-              </ul>
-              <div class="act"><span lang="ko">취소</span><span lang="en">Cancel</span><span lang="ko">복원</span><span lang="en">Restore</span></div>
-            </div>
+          <p class="say"><span lang="ko">복원할 때 “전화 앱 통화기록에도 복원”을 체크하면, 휴대폰 기본 전화 앱에도 다시 들어가요. 넣기 전에 몇 건인지 먼저 보여 주고, 이미 있는 통화는 건너뛰어요.</span><span lang="en">Check “Also restore to the Phone app call history” and the calls go back into your phone’s own call log. You see the count first, and calls already there are skipped.</span></p>
+        <div class="piece">
+          <div class="check"><i></i><span lang="ko">전화 앱 통화기록에도 복원</span><span lang="en">Also restore to the Phone app call history</span></div>
+          <div class="dialog" role="img" aria-label="Restore preview dialog">
+            <h4 lang="ko">전화 앱에 3건을 복원합니다</h4><h4 lang="en">Restore 3 calls to the Phone app</h4>
+            <ul>
+              <li lang="ko">전화 앱에 없는 통화 3건</li><li lang="en">3 calls missing from the Phone app</li>
+              <li lang="ko">이미 있는 통화 42건은 건너뜀</li><li lang="en">42 calls already there are skipped</li>
+            </ul>
+            <div class="act"><span lang="ko">취소</span><span lang="en">Cancel</span><span lang="ko">복원</span><span lang="en">Restore</span></div>
           </div>
-        </article>
+        </div>
+      </article>
 
-        <article class="tile t-find">
+      <article class="tile t-find" id="m-find">
           <h3><span lang="ko">몇 달 전 그 번호, 다시 찾고 싶어요</span><span lang="en">Find that number from months ago</span></h3>
-          <div class="mini">
-            <div class="search"><span lang="ko">이름이나 번호로 검색</span><span lang="en">Search by name or number</span></div>
-            <div class="hit"><span><span lang="ko">부동산 사무실</span><span lang="en">Real estate office</span><span class="tag in" lang="ko">수신</span><span class="tag in" lang="en">In</span></span><em lang="ko">7개월 전</em><em lang="en">7 months ago</em></div>
-            <div class="hit"><span>031-555-0142<span class="tag miss" lang="ko">부재중</span><span class="tag miss" lang="en">Missed</span></span><em lang="ko">5개월 전</em><em lang="en">5 months ago</em></div>
-          </div>
-          <p><span lang="ko">전화 앱에서 이미 사라진 통화도 DialRolo 검색에는 남아 있어요.</span><span lang="en">Calls already gone from the Phone app still show up here.</span></p>
-        </article>
+          <p class="say"><span lang="ko">전화 앱에서 이미 사라진 통화도 DialRolo 검색에는 남아 있어요.</span><span lang="en">Calls already gone from the Phone app still show up here.</span></p>
+        <div class="piece">
+          <div class="search"><span lang="ko">이름이나 번호로 검색</span><span lang="en">Search by name or number</span></div>
+          <table class="hits">
+            <tbody>
+              <tr><td><span lang="ko">부동산 사무실</span><span lang="en">Real estate office</span><span class="tag" lang="ko">수신</span><span class="tag" lang="en">In</span></td><td class="when"><span lang="ko">7개월 전</span><span lang="en">7 months ago</span></td></tr>
+              <tr><td><span class="phone-no">031-555-0142</span><span class="tag miss" lang="ko">부재중</span><span class="tag miss" lang="en">Missed</span></td><td class="when"><span lang="ko">5개월 전</span><span lang="en">5 months ago</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
 
-        <article class="tile t-auto">
+      <article class="tile t-auto" id="m-auto">
           <h3><span lang="ko">백업, 매번 신경 쓰기 싫어요</span><span lang="en">Never think about backups again</span></h3>
-          <div class="mini">
-            <div class="switch"><span lang="ko">매일 02:00 자동 백업</span><span lang="en">Daily backup at 02:00</span><i aria-hidden="true"></i></div>
-            <div class="toast"><span lang="ko">자동 백업 완료. 통화 6,254건</span><span lang="en">Auto backup done. 6,254 calls</span></div>
-          </div>
-          <p><span lang="ko">한 번 켜 두면 밤사이 알아서 백업해요. 저장 폴더가 사라지면 알려 주고 멈춰요.</span><span lang="en">Turn it on once and it runs overnight. If the folder goes missing, it tells you and pauses.</span></p>
-        </article>
+          <p class="say"><span lang="ko">한 번 켜 두면 밤사이 알아서 백업해요. 저장 폴더가 사라지면 알려 주고 멈춰요.</span><span lang="en">Turn it on once and it runs overnight. If the folder goes missing, it tells you and pauses.</span></p>
+        <div class="piece">
+          <div class="switch"><span lang="ko">매일 02:00 자동 백업</span><span lang="en">Daily backup at 02:00</span><i aria-hidden="true"></i></div>
+          <div class="toast"><span lang="ko">자동 백업 완료. 통화 6,254건</span><span lang="en">Auto backup done. 6,254 calls</span></div>
+        </div>
+      </article>
 
-        <article class="tile t-pw">
+      <article class="tile t-pw" id="m-pw">
           <h3><span lang="ko">비밀번호를 잊으면요?</span><span lang="en">Forgot your password?</span></h3>
+          <p class="say"><span lang="ko">비밀번호를 만들 때 16자리 복구 코드를 한 번 보여 드려요. 종이에 적어 두세요. 둘 다 잃으면 누구도 백업을 열 수 없어요. 그래야 다른 사람도 못 열어요.</span><span lang="en">When you set a password, you get a 16-character recovery code once. Write it down. Lose both and nobody can open the backup, which is also why nobody else can.</span></p>
+        <div class="piece">
           <div class="code" aria-label="Example recovery code">Q7RM-4KDP-W2XA-9HCT</div>
-          <p><span lang="ko">비밀번호를 만들 때 16자리 복구 코드를 한 번 보여 드려요. 종이에 적어 두세요. 둘 다 잃으면 누구도 백업을 열 수 없어요. 그래야 다른 사람도 못 열어요.</span><span lang="en">When you set a password, you get a 16-character recovery code once. Write it down. Lose both and nobody can open the backup, which is also why nobody else can.</span></p>
-        </article>
+        </div>
+      </article>
 
-        <article class="tile t-dash">
+      <article class="tile t-dash" id="m-dash">
           <h3><span lang="ko">모아 둔 기록은 이렇게도 보여요</span><span lang="en">Your archive, at a glance</span></h3>
-          <div class="dash" role="img" aria-label="Example dashboard">
-            <div class="kpi"><span lang="ko">이번 주 통화</span><span lang="en">This week</span><strong lang="ko">2시간 14분</strong><strong lang="en">2h 14m</strong></div>
-            <div class="kpi"><span lang="ko">가장 많이 통화</span><span lang="en">Most called</span><strong lang="ko">엄마</strong><strong lang="en">Mom</strong></div>
-            <div class="bars"><span lang="ko">시간대별 통화</span><span lang="en">Calls by hour</span>
-              <div aria-hidden="true"><b style="height:20%"></b><b style="height:35%"></b><b style="height:55%"></b><b class="hi" style="height:95%"></b><b style="height:60%"></b><b style="height:40%"></b><b style="height:70%"></b><b style="height:85%"></b><b style="height:45%"></b><b style="height:25%"></b></div>
-            </div>
-            <div class="kpi"><span lang="ko">한동안 연락 안 한 사람</span><span lang="en">Haven't called in a while</span><strong lang="ko">12명</strong><strong lang="en">12 people</strong></div>
-            <div class="kpi"><span lang="ko">부재중 비율</span><span lang="en">Missed rate</span><strong>8%</strong></div>
+          <p class="say"><span lang="ko">보관한 통화로 계산해서, 전화 앱에서 지워진 기간까지 포함해 보여 줘요.</span><span lang="en">Calculated from your archive, so it includes the months your Phone app already forgot.</span></p>
+        <div class="piece" role="img" aria-label="Example dashboard">
+          <dl class="dash">
+            <div><dt><span lang="ko">이번 주 통화</span><span lang="en">This week</span></dt><dd lang="ko">2시간 14분</dd><dd lang="en">2h 14m</dd></div>
+            <div><dt><span lang="ko">가장 많이 통화</span><span lang="en">Most called</span></dt><dd lang="ko">엄마</dd><dd lang="en">Mom</dd></div>
+            <div><dt><span lang="ko">한동안 연락 안 한 사람</span><span lang="en">Haven’t called in a while</span></dt><dd lang="ko">12명</dd><dd lang="en">12 people</dd></div>
+            <div><dt><span lang="ko">부재중 비율</span><span lang="en">Missed rate</span></dt><dd class="num">8%</dd></div>
+          </dl>
+          <div class="bars"><span lang="ko">시간대별 통화</span><span lang="en">Calls by hour</span>
+            <div class="chart" aria-hidden="true"><b style="height:20%"></b><b style="height:35%"></b><b style="height:55%"></b><b class="hi" style="height:95%"></b><b style="height:60%"></b><b style="height:40%"></b><b style="height:70%"></b><b style="height:85%"></b><b style="height:45%"></b><b style="height:25%"></b></div>
           </div>
-          <p><span lang="ko">보관한 통화로 계산해서, 전화 앱에서 지워진 기간까지 포함해 보여 줘요.</span><span lang="en">Calculated from your archive, so it includes the months your Phone app already forgot.</span></p>
-        </article>
-
-        <article class="tile t-safe">
-          <h3><span lang="ko">내 통화기록이 어디로 가진 않나요?</span><span lang="en">Does my call history go anywhere?</span></h3>
-          <ul class="lock">
-            <li lang="ko">인터넷 권한이 아예 없어요. 휴대폰 밖으로 보낼 방법이 없어요.</li>
-            <li lang="en">The app has no internet permission at all.</li>
-            <li lang="ko">광고, 분석, 추적 도구가 없어요.</li>
-            <li lang="en">No ads, analytics or trackers.</li>
-            <li lang="ko">백업 파일은 내 비밀번호로 AES-256 암호화돼요.</li>
-            <li lang="en">Backup files are AES-256 encrypted with your password.</li>
-          </ul>
-        </article>
+        </div>
+      </article>
       </div>
     </div>
   </section>
 
-  <section id="video">
-    <div class="wrap">
+  <section class="band-ink" id="safe">
+    <div class="container">
+      <h2><span lang="ko">내 통화기록이 어디로 가진 않나요?</span><span lang="en">Does my call history go anywhere?</span></h2>
+      <ul class="lock">
+        <li lang="ko">인터넷 권한이 아예 없어요. 휴대폰 밖으로 보낼 방법이 없어요.</li>
+        <li lang="en">The app has no internet permission at all.</li>
+        <li lang="ko">광고, 분석, 추적 도구가 없어요.</li>
+        <li lang="en">No ads, analytics or trackers.</li>
+        <li lang="ko">백업 파일은 내 비밀번호로 AES-256 암호화돼요.</li>
+        <li lang="en">Backup files are AES-256 encrypted with your password.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="video">
+    <div class="container">
       <div class="sec-head">
         <h2><span lang="ko">백업부터 되살리기까지, 1분 40초</span><span lang="en">Backup to restore in under two minutes</span></h2>
         <p><span lang="ko">지운 통화 3건이 전화 앱에 다시 돌아오는 과정을 그대로 보여 줘요.</span><span lang="en">Watch three deleted calls come back to the Phone app.</span></p>
@@ -433,7 +466,7 @@ footer a{color:var(--ink-2)}
         <div>
           <ol class="chapters">
             <li><button type="button" data-start="5"><time>0:05</time><span lang="ko">첫 실행: 안내를 읽고 권한 허용</span><span lang="en">First launch: read, then allow access</span></button></li>
-            <li><button type="button" data-start="16"><time>0:16</time><span lang="ko">첫 화면에서 보관 현황 확인</span><span lang="en">See what's kept on the home screen</span></button></li>
+            <li><button type="button" data-start="16"><time>0:16</time><span lang="ko">첫 화면에서 보관 현황 확인</span><span lang="en">See what’s kept on the home screen</span></button></li>
             <li><button type="button" data-start="22"><time>0:22</time><span lang="ko">비밀번호 만들고 백업</span><span lang="en">Set a password and back up</span></button></li>
             <li><button type="button" data-start="50"><time>0:50</time><span lang="ko">전화 앱에서 통화 3건 삭제</span><span lang="en">Delete 3 calls in the Phone app</span></button></li>
             <li class="key"><button type="button" data-start="67"><time>1:07</time><span lang="ko">파일에서 복원, 미리보기 확인</span><span lang="en">Restore from file, check the preview</span></button></li>
@@ -445,26 +478,24 @@ footer a{color:var(--ink-2)}
     </div>
   </section>
 
-  <section id="faq">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2><span lang="ko">자주 묻는 질문</span><span lang="en">Questions people ask</span></h2>
-      </div>
+  <section class="sec" id="faq">
+    <div class="container faq-wrap">
+      <h2><span lang="ko">자주 묻는 질문</span><span lang="en">Questions people ask</span></h2>
       <div class="faq">
         <details>
           <summary><span lang="ko">설치하기 전에 지워진 통화도 찾을 수 있나요?</span><span lang="en">Can it recover calls deleted before I installed it?</span></summary>
           <p lang="ko">아니요. DialRolo는 설치한 시점에 휴대폰에 남아 있는 통화부터 보관해요. 그래서 빨리 설치할수록 많이 남아요.</p>
-          <p lang="en">No. DialRolo keeps what's on your phone from the moment you install it, so the sooner you install, the more it keeps.</p>
+          <p lang="en">No. DialRolo keeps what’s on your phone from the moment you install it, so the sooner you install, the more it keeps.</p>
         </details>
         <details>
           <summary><span lang="ko">통화기록이 서버로 전송되나요?</span><span lang="en">Is my call history sent to a server?</span></summary>
           <p lang="ko">아니요. 앱에 인터넷 권한이 없어서 보낼 방법 자체가 없어요. 모든 처리는 휴대폰 안에서만 해요.</p>
-          <p lang="en">No. The app has no internet permission, so it can't send anything. Everything happens on your phone.</p>
+          <p lang="en">No. The app has no internet permission, so it can’t send anything. Everything happens on your phone.</p>
         </details>
         <details>
           <summary><span lang="ko">전화 앱으로 복원했는데 일부만 보여요.</span><span lang="en">I restored to the Phone app but only see some calls.</span></summary>
           <p lang="ko">정상이에요. 삼성 등 많은 휴대폰은 전화 앱에 최근 2,000건까지만 남겨요. 나머지는 DialRolo 통화기록 화면에 모두 있어요.</p>
-          <p lang="en">That's expected. Many phones keep only the latest 2,000 calls in the Phone app. Everything else is still in DialRolo.</p>
+          <p lang="en">That’s expected. Many phones keep only the latest 2,000 calls in the Phone app. Everything else is still in DialRolo.</p>
         </details>
         <details>
           <summary><span lang="ko">같은 백업을 두 번 복원하면 중복되나요?</span><span lang="en">Will restoring twice create duplicates?</span></summary>
@@ -474,7 +505,7 @@ footer a{color:var(--ink-2)}
         <details>
           <summary><span lang="ko">앱을 지우면 기록도 사라지나요?</span><span lang="en">What happens if I uninstall?</span></summary>
           <p lang="ko">네, 앱 안의 보관 기록은 함께 지워져요. 지우기 전에 .rolo 파일로 백업해 두면 언제든 다시 복원할 수 있어요. 휴대폰 기본 통화기록에는 영향이 없어요.</p>
-          <p lang="en">The archive inside the app is removed. Back up to a .rolo file first and you can restore it anytime. Your phone's own call log isn't affected.</p>
+          <p lang="en">The archive inside the app is removed. Back up to a .rolo file first and you can restore it anytime. Your phone’s own call log isn’t affected.</p>
         </details>
         <details>
           <summary><span lang="ko">정말 무료인가요?</span><span lang="en">Is it really free?</span></summary>
@@ -485,28 +516,40 @@ footer a{color:var(--ink-2)}
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="get">
+  <section class="get">
+    <div class="container">
+      <div class="get-head">
         <img src="assets/icon-192.png" alt="DialRolo" width="88" height="88">
         <div>
           <h2><span lang="ko">오늘부터 보관을 시작하세요</span><span lang="en">Start keeping your calls today</span></h2>
           <p><span lang="ko">지금 휴대폰에 남아 있는 통화부터 모아 둬요.</span><span lang="en">It starts with the calls on your phone right now.</span></p>
         </div>
-        <div class="cta">
-          <a class="btn btn-primary" href="https://m.onestore.co.kr/v2/ko-kr/app/0001005958" target="_blank" rel="noopener"><span lang="ko">원스토어에서 받기</span><span lang="en">Get it on ONE Store</span></a>
-          <span class="btn btn-quiet" aria-disabled="true">Google Play <small lang="ko">준비 중</small><small lang="en">coming soon</small></span>
-        </div>
       </div>
+      <table class="stores">
+        <tbody>
+          <tr>
+            <td class="store"><span lang="ko">원스토어</span><span lang="en">ONE Store</span></td>
+            <td><a class="btn btn--primary" href="https://m.onestore.co.kr/v2/ko-kr/app/0001005958" target="_blank" rel="noopener"><span lang="ko">원스토어에서 받기</span><span lang="en">Get it on ONE Store</span></a></td>
+          </tr>
+          <tr>
+            <td class="store">Google Play</td>
+            <td><span class="btn" aria-disabled="true">Google Play <small lang="ko">준비 중</small><small lang="en">coming soon</small></span></td>
+          </tr>
+          <tr>
+            <td class="req" colspan="2"><span lang="ko">Android 9 이상</span><span lang="en">Android 9 or later</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">
-    <span>© 2026 NMTT Co.</span>
-    <a href="/"><span lang="ko">개인정보처리방침</span><span lang="en">Privacy policy</span></a>
-    <a href="mailto:mcstarbig@gmail.com"><span lang="ko">문의</span><span lang="en">Contact</span>: mcstarbig@gmail.com</a>
+  <div class="container">
+    <div class="colophon-mark">DialRolo</div>
+    <p class="colophon">© 2026 NMTT Co.<br>
+      <a href="/"><span lang="ko">개인정보처리방침</span><span lang="en">Privacy policy</span></a><br>
+      <a href="mailto:mcstarbig@gmail.com"><span lang="ko">문의</span><span lang="en">Contact</span>: mcstarbig@gmail.com</a></p>
   </div>
 </footer>
 
@@ -528,6 +571,7 @@ footer a{color:var(--ink-2)}
 
   var nav=document.getElementById('nav');
   window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>8)},{passive:true});
+
 
   // YouTube loads only when the visitor asks for it.
   var VIDEO='uvUsKyb9ZGY';
