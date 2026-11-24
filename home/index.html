@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="ko" data-lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DialRolo - 통화기록 백업 & 복원</title>
+<meta name="description" content="휴대폰이 지우기 전에 통화기록을 보관하고, 폰을 바꾸거나 실수로 지워도 다시 꺼내 쓰세요. 무료, 광고 없음, 인터넷 권한 없음.">
+<meta property="og:title" content="DialRolo - 통화기록 백업 & 복원">
+<meta property="og:description" content="휴대폰이 지우기 전에 통화기록을 보관하고, 언제든 다시 꺼내 쓰세요.">
+<meta property="og:image" content="assets/icon-192.png">
+<link rel="icon" href="assets/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#1E2A38;
+  --ink-2:#3A4656;
+  --paper:#EDF0F4;
+  --card:#FFFFFF;
+  --line:#D8DEE6;
+  --muted:#5F6B7A;
+  --keep:#0D8576;
+  --keep-soft:#DDF1EE;
+  --drop:#C9443B;
+  --drop-soft:#F8E3E1;
+  --r-lg:28px;
+  --r-md:18px;
+  --r-sm:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  font-feature-settings:"tnum" 1;
+}
+a{color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:3px solid var(--keep);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+
+/* language switching */
+html[data-lang="ko"] [lang="en"]{display:none!important}
+html[data-lang="en"] [lang="ko"]{display:none!important}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:20;background:rgba(237,240,244,.86);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid transparent}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:750;font-size:18px;letter-spacing:-.01em}
+.brand img{width:32px;height:32px;border-radius:9px}
+.nav-links{display:flex;gap:22px;margin-left:auto;font-size:15px}
+.nav-links a{text-decoration:none;color:var(--muted)}
+.nav-links a:hover{color:var(--ink)}
+.lang{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink)}
+@media (max-width:760px){.nav-links{display:none}.lang{margin-left:auto}}
+
+/* hero */
+.hero{padding:56px 0 40px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+h1{font-size:clamp(36px,5.4vw,62px);line-height:1.12;letter-spacing:-.035em;font-weight:800;margin:0 0 22px;word-break:keep-all;text-wrap:balance}
+.lead{font-size:19px;color:var(--ink-2);max-width:34em;margin:0 0 30px;word-break:keep-all}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:14px;font-weight:650;font-size:16px;text-decoration:none;border:1px solid transparent}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{background:var(--ink-2)}
+.btn-quiet{background:var(--card);border-color:var(--line);color:var(--muted);cursor:default}
+.btn small{font-weight:500;opacity:.75}
+.facts{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.facts li{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px;color:var(--ink-2)}
+
+/* hero dashboard widget */
+.panel{background:var(--card);border-radius:var(--r-lg);padding:28px;box-shadow:0 1px 0 var(--line),0 24px 48px -28px rgba(30,42,56,.35)}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px}
+.panel-head h2{font-size:17px;margin:0;font-weight:700}
+.panel-head span{font-size:13px;color:var(--muted)}
+.meter{margin-bottom:22px}
+.meter-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.meter-name{font-weight:650;font-size:15px}
+.meter-num{font-size:34px;font-weight:800;letter-spacing:-.03em}
+.meter-num small{font-size:15px;font-weight:600;color:var(--muted);margin-left:4px}
+.track{position:relative;height:14px;border-radius:7px;background:#EEF1F5;overflow:hidden}
+.fill{position:absolute;inset:0 auto 0 0;border-radius:7px}
+.fill.phone{background:var(--ink-2);width:32%}
+.fill.keep{background:var(--keep);width:100%}
+.cap{position:absolute;top:-4px;bottom:-4px;left:32%;width:2px;background:var(--drop)}
+.meter-note{font-size:13.5px;color:var(--muted);margin-top:8px}
+.meter-note b{color:var(--drop);font-weight:650}
+.meter-note.ok b{color:var(--keep)}
+.drops{display:flex;gap:6px;margin-top:10px;height:22px;align-items:center}
+.drops i{width:22px;height:8px;border-radius:4px;background:var(--drop-soft)}
+.panel-foot{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;border-top:1px solid var(--line);padding-top:18px}
+.panel-foot div{font-size:13px;color:var(--muted)}
+.panel-foot strong{display:block;font-size:20px;color:var(--ink);font-weight:750;letter-spacing:-.02em}
+.example{font-size:12.5px;color:var(--muted);margin-top:14px;text-align:right}
+
+@media (prefers-reduced-motion:no-preference){
+  .anim .fill.phone{animation:grow 1.2s cubic-bezier(.2,.7,.2,1) both}
+  .anim .fill.keep{animation:growK 2.2s cubic-bezier(.2,.7,.2,1) .3s both}
+  .anim .drops i{animation:drop 2.4s ease-in 1.2s infinite}
+  .anim .drops i:nth-child(2){animation-delay:1.6s}
+  .anim .drops i:nth-child(3){animation-delay:2s}
+  .anim .drops i:nth-child(4){animation-delay:2.4s}
+}
+@keyframes grow{from{width:0}}
+@keyframes growK{from{width:0}}
+@keyframes drop{0%{opacity:1;transform:none}70%{opacity:0;transform:translateY(14px)}100%{opacity:0;transform:translateY(14px)}}
+
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
+
+/* sections */
+section{padding:56px 0}
+.sec-head{max-width:640px;margin-bottom:30px}
+.sec-head h2{font-size:clamp(28px,3.4vw,40px);line-height:1.2;letter-spacing:-.03em;margin:0 0 10px;font-weight:800;word-break:keep-all}
+.sec-head p{margin:0;color:var(--muted);font-size:17.5px;word-break:keep-all}
+
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.tile{background:var(--card);border-radius:var(--r-md);padding:26px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.tile h3{font-size:22px;line-height:1.3;letter-spacing:-.02em;margin:0;font-weight:750;word-break:keep-all}
+.tile p{margin:0;color:var(--ink-2);font-size:16px;word-break:keep-all}
+.t-move{grid-column:span 4}
+.t-undo{grid-column:span 2;grid-row:span 2}
+.t-find,.t-auto{grid-column:span 2}
+.t-pw{grid-column:span 2}
+.t-dash{grid-column:span 4}
+.t-safe{grid-column:span 6;background:var(--ink);color:#fff;flex-direction:row;align-items:center;gap:32px}
+.t-safe h3{flex:0 0 280px}
+.t-safe .lock{flex-direction:row;flex-wrap:wrap;gap:12px 28px}
+.t-safe .lock li{flex:1 1 220px}
+.t-safe p{color:#C9D2DE}
+@media (max-width:980px){
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .t-move,.t-dash{grid-column:span 2}
+  .t-undo{grid-column:span 2;grid-row:auto}
+  .t-find,.t-auto,.t-pw{grid-column:span 1}
+  .t-safe{grid-column:span 2;flex-direction:column;align-items:stretch}
+  .t-safe h3{flex:none}
+}
+@media (max-width:620px){
+  .bento{grid-template-columns:1fr}
+  .t-move,.t-dash,.t-undo,.t-find,.t-auto,.t-pw,.t-safe{grid-column:auto}
+}
+
+/* mini UI pieces */
+.mini{background:var(--paper);border-radius:var(--r-sm);padding:14px;font-size:14px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;counter-reset:s}
+.steps li{background:var(--paper);border-radius:var(--r-sm);padding:16px;counter-increment:s;font-size:15px;word-break:keep-all}
+.steps li::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;font-size:14px;margin-bottom:10px}
+.steps b{display:block;margin-bottom:2px}
+.steps span{color:var(--muted);font-size:14px}
+@media (max-width:620px){.steps{grid-template-columns:1fr}}
+.file{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:6px 10px;font-size:13px;color:var(--ink-2);margin-top:6px;word-break:break-all}
+.file::before{content:"";width:12px;height:14px;border-radius:2px;background:var(--keep)}
+
+.dialog{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 12px 30px -16px rgba(30,42,56,.45);border:1px solid var(--line)}
+.dialog h4{margin:0 0 10px;font-size:16px}
+.dialog ul{margin:0 0 16px;padding-left:18px;font-size:14px;color:var(--ink-2)}
+.dialog ul li::marker{color:var(--keep)}
+.dialog .act{display:flex;justify-content:flex-end;gap:10px;font-size:14px;font-weight:650}
+.dialog .act span{padding:8px 14px;border-radius:999px}
+.dialog .act span:last-child{background:var(--ink);color:#fff}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin-bottom:12px}
+.check i{flex:none;width:18px;height:18px;border-radius:5px;background:var(--ink);position:relative;margin-top:2px}
+.check i::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+.undo-stack{display:flex;flex-direction:column;gap:12px;margin-top:auto}
+
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;color:var(--muted);font-size:14px;margin-bottom:10px}
+.search::before{content:"";width:12px;height:12px;border:2px solid var(--muted);border-radius:50%}
+.hit{display:flex;justify-content:space-between;gap:10px;background:var(--card);border-radius:10px;padding:10px 12px;font-size:14px}
+.hit em{font-style:normal;color:var(--muted);white-space:nowrap}
+.hit + .hit{margin-top:6px}
+.tag{font-size:12px;font-weight:650;border-radius:6px;padding:1px 7px;margin-left:6px}
+.tag.in{background:var(--keep-soft);color:var(--keep)}
+.tag.miss{background:var(--drop-soft);color:var(--drop)}
+
+.switch{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:10px;padding:12px 14px;font-weight:600;font-size:15px}
+.switch i{width:44px;height:26px;border-radius:13px;background:var(--keep);position:relative}
+.switch i::after{content:"";position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff}
+.toast{margin-top:8px;background:var(--ink);color:#fff;border-radius:10px;padding:10px 12px;font-size:13.5px}
+
+.code{font-size:clamp(15px,1.6vw,19px);white-space:nowrap;font-weight:750;letter-spacing:.04em;text-align:center;background:var(--card);border:1px dashed var(--ink-2);border-radius:10px;padding:12px;font-variant-numeric:tabular-nums}
+
+.dash{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.kpi{background:var(--paper);border-radius:var(--r-sm);padding:14px}
+.kpi span{display:block;font-size:13px;color:var(--muted)}
+.kpi strong{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.bars{grid-column:span 2;background:var(--paper);border-radius:var(--r-sm);padding:14px;display:flex;flex-direction:column}
+.bars span{font-size:13px;color:var(--muted)}
+.bars div{display:flex;align-items:flex-end;gap:5px;height:70px;margin-top:auto}
+.bars b{flex:1;background:var(--ink-2);border-radius:3px 3px 0 0}
+.bars b.hi{background:var(--keep)}
+@media (max-width:620px){
+  .dash{grid-template-columns:1fr 1fr}
+  .kpi strong{font-size:20px;white-space:nowrap}
+  .panel{padding:22px}
+  .panel-foot strong{font-size:16px;white-space:nowrap}
+  .player button{padding:16px}
+  .player strong{font-size:16px}
+  .player small{display:none}
+  .play{width:56px;height:56px;top:40%}
+  .play::after{border-left-width:18px;border-top-width:11px;border-bottom-width:11px;margin-left:4px}
+}
+
+.lock{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.lock li{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:#E6EBF1}
+.lock li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#5FD1C1;margin-top:9px}
+
+/* video */
+.video{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.player{position:relative;aspect-ratio:16/9;border-radius:var(--r-md);overflow:hidden;background:var(--ink);color:#fff}
+.player button{all:unset;cursor:pointer;position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:28px;background:
+  radial-gradient(circle at 78% 40%,rgba(95,209,193,.22),transparent 45%),var(--ink)}
+.player button:focus-visible{outline:3px solid #5FD1C1;outline-offset:-6px}
+.play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.play::after{content:"";margin-left:6px;border-left:24px solid var(--ink);border-top:15px solid transparent;border-bottom:15px solid transparent}
+.player strong{font-size:22px;letter-spacing:-.02em}
+.player small{color:#C9D2DE;font-size:14px}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.chapters{background:var(--card);border-radius:var(--r-md);padding:22px;margin:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.chapters li button{all:unset;cursor:pointer;display:grid;grid-template-columns:52px 1fr;gap:10px;width:100%;padding:9px 10px;border-radius:10px;font-size:15px;box-sizing:border-box;word-break:keep-all}
+.chapters li button:hover{background:var(--paper)}
+.chapters li button:focus-visible{outline:3px solid var(--keep)}
+.chapters time{color:var(--keep);font-weight:700}
+.chapters .key time{color:var(--drop)}
+.vnote{font-size:13.5px;color:var(--muted);margin:10px 4px 0}
+@media (max-width:900px){.video{grid-template-columns:1fr}}
+
+/* faq */
+.faq{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+details{background:var(--card);border-radius:var(--r-md);padding:0 22px}
+summary{cursor:pointer;list-style:none;padding:20px 0;font-weight:700;font-size:17px;display:flex;justify-content:space-between;gap:12px;word-break:keep-all}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:22px;line-height:1;color:var(--muted);transition:transform .2s}
+details[open] summary::after{transform:rotate(45deg)}
+details p{margin:0 0 20px;color:var(--ink-2);font-size:16px;word-break:keep-all}
+@media (max-width:760px){.faq{grid-template-columns:1fr}}
+
+/* get */
+.get{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:44px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}
+.get img{width:88px;height:88px;border-radius:22px}
+.get h2{margin:0 0 6px;font-size:30px;letter-spacing:-.03em}
+.get p{margin:0;color:#C9D2DE}
+.get .btn-primary{background:#fff;color:var(--ink)}
+.get .btn-primary:hover{background:#E6EBF1}
+.get .btn-quiet{background:transparent;border-color:#4A5668;color:#C9D2DE}
+.get .cta{margin:0;flex-direction:column}
+@media (max-width:860px){.get{grid-template-columns:1fr;padding:32px}}
+
+footer{padding:40px 0 56px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center}
+footer a{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/icon-192.png" alt="" width="32" height="32">DialRolo</a>
+    <nav class="nav-links" aria-label="Page">
+      <a href="#uses"><span lang="ko">이럴 때 써요</span><span lang="en">When you need it</span></a>
+      <a href="#video"><span lang="ko">사용법 영상</span><span lang="en">Watch how</span></a>
+      <a href="#faq"><span lang="ko">자주 묻는 질문</span><span lang="en">FAQ</span></a>
+      <a href="/"><span lang="ko">개인정보처리방침</span><span lang="en">Privacy</span></a>
+    </nav>
+    <button class="lang" id="langBtn" type="button" aria-label="Change language"><span lang="ko">English</span><span lang="en">한국어</span></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>
+          <span lang="ko">휴대폰이 지우기 전에, 통화기록을 챙겨 두세요</span>
+          <span lang="en">Keep your call history before your phone deletes it</span>
+        </h1>
+        <p class="lead">
+          <span lang="ko">휴대폰은 통화기록을 2,000건 정도만 남기고 오래된 것부터 지워요. DialRolo는 지워지기 전에 모아 두고, 폰을 바꾸거나 실수로 지웠을 때 다시 꺼내 쓸 수 있게 해 줘요.</span>
+          <span lang="en">Most phones keep about 2,000 calls and quietly delete the oldest. DialRolo saves them before they go, so you can bring them back when you switch phones or delete one by mistake.</span>
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://m.onestore.co.kr/v2/ko-kr/app/0001005958" target="_blank" rel="noopener">
+            <span lang="ko">원스토어에서 받기</span><span lang="en">Get it on ONE Store</span>
+          </a>
+          <span class="btn btn-quiet" aria-disabled="true">
+            Google Play <small lang="ko">준비 중</small><small lang="en">coming soon</small>
+          </span>
+        </div>
+        <ul class="facts">
+          <li lang="ko">무료, 광고 없음</li><li lang="en">Free, no ads</li>
+          <li lang="ko">인터넷 권한 없음</li><li lang="en">No internet permission</li>
+          <li lang="ko">Android 9 이상</li><li lang="en">Android 9 or later</li>
+        </ul>
+      </div>
+
+      <div class="panel anim" aria-label="Example: calls kept by the Phone app and by DialRolo">
+        <div class="panel-head">
+          <h2><span lang="ko">내 통화기록, 어디에 얼마나</span><span lang="en">Where your calls are</span></h2>
+          <span lang="ko">예시 화면</span><span lang="en">Example</span>
+        </div>
+
+        <div class="meter">
+          <div class="meter-row">
+            <span class="meter-name"><span lang="ko">전화 앱</span><span lang="en">Phone app</span></span>
+            <span class="meter-num">2,000<small lang="ko">건</small><small lang="en">calls</small></span>
+          </div>
+          <div class="track"><div class="fill phone"></div><div class="cap"></div></div>
+          <div class="meter-note"><span lang="ko"><b>한도에 닿으면</b> 오래된 통화부터 사라져요</span><span lang="en"><b>At the limit,</b> the oldest calls disappear</span></div>
+          <div class="drops" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </div>
+
+        <div class="meter">
+          <div class="meter-row">
+            <span class="meter-name">DialRolo</span>
+            <span class="meter-num" id="keepNum">6,254<small lang="ko">건</small><small lang="en">calls</small></span>
+          </div>
+          <div class="track"><div class="fill keep"></div></div>
+          <div class="meter-note ok"><span lang="ko"><b>전화 앱보다 4,254건 더</b> 보관 중</span><span lang="en"><b>4,254 more calls</b> than the Phone app</span></div>
+        </div>
+
+        <div class="panel-foot">
+          <div><span lang="ko">마지막 백업</span><span lang="en">Last backup</span><strong lang="ko">오늘 02:00</strong><strong lang="en">Today 02:00</strong></div>
+          <div><span lang="ko">보관 시작</span><span lang="en">Kept since</span><strong>2025.07</strong></div>
+          <div><span lang="ko">백업 파일</span><span lang="en">Backup file</span><strong lang="ko">암호화됨</strong><strong lang="en">Encrypted</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="uses">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><span lang="ko">이럴 때 DialRolo가 있으면 달라요</span><span lang="en">Moments when DialRolo makes a difference</span></h2>
+        <p><span lang="ko">기능 목록보다 실제로 겪는 순간부터 보세요.</span><span lang="en">Start with the moments you actually run into.</span></p>
+      </div>
+
+      <div class="bento">
+        <article class="tile t-move">
+          <h3><span lang="ko">폰을 바꿨는데, 통화기록은 그대로 가져가고 싶어요</span><span lang="en">New phone, same call history</span></h3>
+          <ol class="steps">
+            <li><b lang="ko">옛 폰에서 지금 백업</b><b lang="en">Back up on the old phone</b><span lang="ko">비밀번호로 잠긴 .rolo 파일이 생겨요</span><span lang="en">You get a password-locked .rolo file</span>
+              <div class="file">DialRolo_Manual_20261123_0930.rolo</div></li>
+            <li><b lang="ko">파일을 새 폰으로</b><b lang="en">Move the file</b><span lang="ko">구글 드라이브, USB, 메일 첨부 등 편한 방법으로</span><span lang="en">Drive, USB or email, whatever is easiest</span></li>
+            <li><b lang="ko">새 폰에서 파일로 복원</b><b lang="en">Restore on the new phone</b><span lang="ko">몇 년 치 기록과 설정이 그대로 옮겨와요</span><span lang="en">Years of calls and your settings come along</span></li>
+          </ol>
+        </article>
+
+        <article class="tile t-undo">
+          <h3><span lang="ko">실수로 지운 통화를 전화 앱에 되살리고 싶어요</span><span lang="en">Put a deleted call back in the Phone app</span></h3>
+          <p><span lang="ko">복원할 때 "전화 앱 통화기록에도 복원"을 체크하면, 휴대폰 기본 전화 앱에도 다시 들어가요. 넣기 전에 몇 건인지 먼저 보여 주고, 이미 있는 통화는 건너뛰어요.</span><span lang="en">Check "Also restore to the Phone app call history" and the calls go back into your phone's own call log. You see the count first, and calls already there are skipped.</span></p>
+          <div class="undo-stack">
+            <div class="check"><i></i><span lang="ko">전화 앱 통화기록에도 복원</span><span lang="en">Also restore to the Phone app call history</span></div>
+            <div class="dialog" role="img" aria-label="Restore preview dialog">
+              <h4 lang="ko">전화 앱에 3건을 복원합니다</h4><h4 lang="en">Restore 3 calls to the Phone app</h4>
+              <ul>
+                <li lang="ko">전화 앱에 없는 통화 3건</li><li lang="en">3 calls missing from the Phone app</li>
+                <li lang="ko">이미 있는 통화 42건은 건너뜀</li><li lang="en">42 calls already there are skipped</li>
+              </ul>
+              <div class="act"><span lang="ko">취소</span><span lang="en">Cancel</span><span lang="ko">복원</span><span lang="en">Restore</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="tile t-find">
+          <h3><span lang="ko">몇 달 전 그 번호, 다시 찾고 싶어요</span><span lang="en">Find that number from months ago</span></h3>
+          <div class="mini">
+            <div class="search"><span lang="ko">이름이나 번호로 검색</span><span lang="en">Search by name or number</span></div>
+            <div class="hit"><span><span lang="ko">부동산 사무실</span><span lang="en">Real estate office</span><span class="tag in" lang="ko">수신</span><span class="tag in" lang="en">In</span></span><em lang="ko">7개월 전</em><em lang="en">7 months ago</em></div>
+            <div class="hit"><span>031-555-0142<span class="tag miss" lang="ko">부재중</span><span class="tag miss" lang="en">Missed</span></span><em lang="ko">5개월 전</em><em lang="en">5 months ago</em></div>
+          </div>
+          <p><span lang="ko">전화 앱에서 이미 사라진 통화도 DialRolo 검색에는 남아 있어요.</span><span lang="en">Calls already gone from the Phone app still show up here.</span></p>
+        </article>
+
+        <article class="tile t-auto">
+          <h3><span lang="ko">백업, 매번 신경 쓰기 싫어요</span><span lang="en">Never think about backups again</span></h3>
+          <div class="mini">
+            <div class="switch"><span lang="ko">매일 02:00 자동 백업</span><span lang="en">Daily backup at 02:00</span><i aria-hidden="true"></i></div>
+            <div class="toast"><span lang="ko">자동 백업 완료. 통화 6,254건</span><span lang="en">Auto backup done. 6,254 calls</span></div>
+          </div>
+          <p><span lang="ko">한 번 켜 두면 밤사이 알아서 백업해요. 저장 폴더가 사라지면 알려 주고 멈춰요.</span><span lang="en">Turn it on once and it runs overnight. If the folder goes missing, it tells you and pauses.</span></p>
+        </article>
+
+        <article class="tile t-pw">
+          <h3><span lang="ko">비밀번호를 잊으면요?</span><span lang="en">Forgot your password?</span></h3>
+          <div class="code" aria-label="Example recovery code">Q7RM-4KDP-W2XA-9HCT</div>
+          <p><span lang="ko">비밀번호를 만들 때 16자리 복구 코드를 한 번 보여 드려요. 종이에 적어 두세요. 둘 다 잃으면 누구도 백업을 열 수 없어요. 그래야 다른 사람도 못 열어요.</span><span lang="en">When you set a password, you get a 16-character recovery code once. Write it down. Lose both and nobody can open the backup, which is also why nobody else can.</span></p>
+        </article>
+
+        <article class="tile t-dash">
+          <h3><span lang="ko">모아 둔 기록은 이렇게도 보여요</span><span lang="en">Your archive, at a glance</span></h3>
+          <div class="dash" role="img" aria-label="Example dashboard">
+            <div class="kpi"><span lang="ko">이번 주 통화</span><span lang="en">This week</span><strong lang="ko">2시간 14분</strong><strong lang="en">2h 14m</strong></div>
+            <div class="kpi"><span lang="ko">가장 많이 통화</span><span lang="en">Most called</span><strong lang="ko">엄마</strong><strong lang="en">Mom</strong></div>
+            <div class="bars"><span lang="ko">시간대별 통화</span><span lang="en">Calls by hour</span>
+              <div aria-hidden="true"><b style="height:20%"></b><b style="height:35%"></b><b style="height:55%"></b><b class="hi" style="height:95%"></b><b style="height:60%"></b><b style="height:40%"></b><b style="height:70%"></b><b style="height:85%"></b><b style="height:45%"></b><b style="height:25%"></b></div>
+            </div>
+            <div class="kpi"><span lang="ko">한동안 연락 안 한 사람</span><span lang="en">Haven't called in a while</span><strong lang="ko">12명</strong><strong lang="en">12 people</strong></div>
+            <div class="kpi"><span lang="ko">부재중 비율</span><span lang="en">Missed rate</span><strong>8%</strong></div>
+          </div>
+          <p><span lang="ko">보관한 통화로 계산해서, 전화 앱에서 지워진 기간까지 포함해 보여 줘요.</span><span lang="en">Calculated from your archive, so it includes the months your Phone app already forgot.</span></p>
+        </article>
+
+        <article class="tile t-safe">
+          <h3><span lang="ko">내 통화기록이 어디로 가진 않나요?</span><span lang="en">Does my call history go anywhere?</span></h3>
+          <ul class="lock">
+            <li lang="ko">인터넷 권한이 아예 없어요. 휴대폰 밖으로 보낼 방법이 없어요.</li>
+            <li lang="en">The app has no internet permission at all.</li>
+            <li lang="ko">광고, 분석, 추적 도구가 없어요.</li>
+            <li lang="en">No ads, analytics or trackers.</li>
+            <li lang="ko">백업 파일은 내 비밀번호로 AES-256 암호화돼요.</li>
+            <li lang="en">Backup files are AES-256 encrypted with your password.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="video">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><span lang="ko">백업부터 되살리기까지, 1분 40초</span><span lang="en">Backup to restore in under two minutes</span></h2>
+        <p><span lang="ko">지운 통화 3건이 전화 앱에 다시 돌아오는 과정을 그대로 보여 줘요.</span><span lang="en">Watch three deleted calls come back to the Phone app.</span></p>
+      </div>
+      <div class="video">
+        <div class="player" id="player">
+          <button type="button" id="playBtn" data-start="0">
+            <span class="play" aria-hidden="true"></span>
+            <strong lang="ko">사용법 영상 보기</strong><strong lang="en">Watch the walkthrough</strong>
+            <small lang="ko">누르면 YouTube 영상이 열려요</small><small lang="en">Opens the YouTube video</small>
+          </button>
+        </div>
+        <div>
+          <ol class="chapters">
+            <li><button type="button" data-start="5"><time>0:05</time><span lang="ko">첫 실행: 안내를 읽고 권한 허용</span><span lang="en">First launch: read, then allow access</span></button></li>
+            <li><button type="button" data-start="16"><time>0:16</time><span lang="ko">첫 화면에서 보관 현황 확인</span><span lang="en">See what's kept on the home screen</span></button></li>
+            <li><button type="button" data-start="22"><time>0:22</time><span lang="ko">비밀번호 만들고 백업</span><span lang="en">Set a password and back up</span></button></li>
+            <li><button type="button" data-start="50"><time>0:50</time><span lang="ko">전화 앱에서 통화 3건 삭제</span><span lang="en">Delete 3 calls in the Phone app</span></button></li>
+            <li class="key"><button type="button" data-start="67"><time>1:07</time><span lang="ko">파일에서 복원, 미리보기 확인</span><span lang="en">Restore from file, check the preview</span></button></li>
+            <li class="key"><button type="button" data-start="91"><time>1:31</time><span lang="ko">전화 앱에 3건이 돌아옴</span><span lang="en">The 3 calls are back</span></button></li>
+          </ol>
+          <p class="vnote"><span lang="ko">영상은 테스트 데이터로 찍은 영어 화면이에요. 앱은 한국어로 똑같이 동작해요.</span><span lang="en">Recorded with test data on an Android 16 emulator.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2><span lang="ko">자주 묻는 질문</span><span lang="en">Questions people ask</span></h2>
+      </div>
+      <div class="faq">
+        <details>
+          <summary><span lang="ko">설치하기 전에 지워진 통화도 찾을 수 있나요?</span><span lang="en">Can it recover calls deleted before I installed it?</span></summary>
+          <p lang="ko">아니요. DialRolo는 설치한 시점에 휴대폰에 남아 있는 통화부터 보관해요. 그래서 빨리 설치할수록 많이 남아요.</p>
+          <p lang="en">No. DialRolo keeps what's on your phone from the moment you install it, so the sooner you install, the more it keeps.</p>
+        </details>
+        <details>
+          <summary><span lang="ko">통화기록이 서버로 전송되나요?</span><span lang="en">Is my call history sent to a server?</span></summary>
+          <p lang="ko">아니요. 앱에 인터넷 권한이 없어서 보낼 방법 자체가 없어요. 모든 처리는 휴대폰 안에서만 해요.</p>
+          <p lang="en">No. The app has no internet permission, so it can't send anything. Everything happens on your phone.</p>
+        </details>
+        <details>
+          <summary><span lang="ko">전화 앱으로 복원했는데 일부만 보여요.</span><span lang="en">I restored to the Phone app but only see some calls.</span></summary>
+          <p lang="ko">정상이에요. 삼성 등 많은 휴대폰은 전화 앱에 최근 2,000건까지만 남겨요. 나머지는 DialRolo 통화기록 화면에 모두 있어요.</p>
+          <p lang="en">That's expected. Many phones keep only the latest 2,000 calls in the Phone app. Everything else is still in DialRolo.</p>
+        </details>
+        <details>
+          <summary><span lang="ko">같은 백업을 두 번 복원하면 중복되나요?</span><span lang="en">Will restoring twice create duplicates?</span></summary>
+          <p lang="ko">아니요. 이미 있는 통화는 건너뛰고 없는 것만 추가해요.</p>
+          <p lang="en">No. Calls that are already there are skipped.</p>
+        </details>
+        <details>
+          <summary><span lang="ko">앱을 지우면 기록도 사라지나요?</span><span lang="en">What happens if I uninstall?</span></summary>
+          <p lang="ko">네, 앱 안의 보관 기록은 함께 지워져요. 지우기 전에 .rolo 파일로 백업해 두면 언제든 다시 복원할 수 있어요. 휴대폰 기본 통화기록에는 영향이 없어요.</p>
+          <p lang="en">The archive inside the app is removed. Back up to a .rolo file first and you can restore it anytime. Your phone's own call log isn't affected.</p>
+        </details>
+        <details>
+          <summary><span lang="ko">정말 무료인가요?</span><span lang="en">Is it really free?</span></summary>
+          <p lang="ko">네. 광고도, 구독도, 유료 기능도 없어요.</p>
+          <p lang="en">Yes. No ads, subscriptions or paid features.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="get">
+        <img src="assets/icon-192.png" alt="DialRolo" width="88" height="88">
+        <div>
+          <h2><span lang="ko">오늘부터 보관을 시작하세요</span><span lang="en">Start keeping your calls today</span></h2>
+          <p><span lang="ko">지금 휴대폰에 남아 있는 통화부터 모아 둬요.</span><span lang="en">It starts with the calls on your phone right now.</span></p>
+        </div>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://m.onestore.co.kr/v2/ko-kr/app/0001005958" target="_blank" rel="noopener"><span lang="ko">원스토어에서 받기</span><span lang="en">Get it on ONE Store</span></a>
+          <span class="btn btn-quiet" aria-disabled="true">Google Play <small lang="ko">준비 중</small><small lang="en">coming soon</small></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 NMTT Co.</span>
+    <a href="/"><span lang="ko">개인정보처리방침</span><span lang="en">Privacy policy</span></a>
+    <a href="mailto:mcstarbig@gmail.com"><span lang="ko">문의</span><span lang="en">Contact</span>: mcstarbig@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var saved=null;
+  try{saved=localStorage.getItem('dialrolo-lang')}catch(e){}
+  var lang=saved||((navigator.language||'').toLowerCase().indexOf('ko')===0?'ko':'en');
+  function apply(l){
+    root.dataset.lang=l;root.lang=l;
+    document.title=l==='ko'?'DialRolo - 통화기록 백업 & 복원':'DialRolo - Call Log Backup & Restore';
+  }
+  apply(lang);
+  document.getElementById('langBtn').addEventListener('click',function(){
+    lang=root.dataset.lang==='ko'?'en':'ko';apply(lang);
+    try{localStorage.setItem('dialrolo-lang',lang)}catch(e){}
+  });
+
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>8)},{passive:true});
+
+  // YouTube loads only when the visitor asks for it.
+  var VIDEO='uvUsKyb9ZGY';
+  function play(start){
+    var p=document.getElementById('player');
+    p.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/'+VIDEO+'?autoplay=1&rel=0&start='+start+'" title="DialRolo walkthrough" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+    p.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  document.getElementById('playBtn').addEventListener('click',function(){play(0)});
+  document.querySelectorAll('.chapters button').forEach(function(b){
+    b.addEventListener('click',function(){play(b.dataset.start)});
+  });
+})();
+</script>
+</body>
+</html>
